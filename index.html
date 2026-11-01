@@ -1,0 +1,1966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Daily Paredes — Personalized Tumblers & Custom Cups</title>
+<meta name="description" content="Handmade personalized glitter tumblers, glass mason mugs and custom gifts from Grand Island, Nebraska. Design your cup in 3D, add your name and order on WhatsApp." />
+<meta name="theme-color" content="#FFF7F9" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Daily Paredes" />
+<meta property="og:title" content="Daily Paredes — Your Cup. Your Style. Your Way." />
+<meta property="og:description" content="Handcrafted personalized drinkware made to bring a little extra joy to every sip." />
+<meta property="og:image" content="og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Fredoka:wght@600&family=Pacifico&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="images/glam-name-1.webp" />
+<!-- 3D designer (Three.js) — loaded only when the designer opens -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+/* =========================================================================
+   TOKENS
+   ========================================================================= */
+:root{
+  --bg:#fff9f7; --cream:#fbf1ec; --blush:#fde8ee; --blush-2:#f9cfdc; --bubble:#ff8fb8;
+  --pink:#e8478b; --rose:#c42d63; --rose-dark:#a11f50; --lavender:#efe8fb; --lav-2:#c9b8f0;
+  --ink:#2b2326; --ink-2:#4a3f43; --muted:#6f6266; --line:#f0e1dd; --white:#fff;
+  --green:#1d8a4c; --green-dark:#17723f;
+  --display:'Fraunces',Georgia,serif; --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --radius:22px; --radius-sm:12px;
+  --shadow-sm:0 1px 2px rgba(43,35,38,.05);
+  --shadow:0 2px 4px rgba(196,45,99,.04),0 14px 34px rgba(196,45,99,.10);
+  --shadow-lg:0 30px 70px rgba(43,35,38,.20);
+  --gutter:16px; --header-h:64px; --ease:cubic-bezier(.22,.61,.36,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+@media (min-width:860px){:root{--gutter:32px;--header-h:76px}}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 12px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+h1,h2,h3{margin:0;font-weight:500;line-height:1.1}
+p{margin:0}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
+main:focus{outline:none}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:fixed;left:12px;top:-60px;z-index:200;background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px}
+.skip:focus{top:12px}
+.container{width:100%;max-width:1320px;margin:0 auto;padding:0 var(--gutter)}
+::selection{background:var(--blush-2)}
+
+/* =========================================================================
+   TYPE
+   ========================================================================= */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
+.eyebrow::before{content:'';width:18px;height:18px;flex:none;background:currentColor;-webkit-mask:var(--heart-mask) center/contain no-repeat;mask:var(--heart-mask) center/contain no-repeat;animation:beat 1.6s ease-in-out infinite}
+:root{--heart-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-10-9.2C.3 8.6 2.1 4.5 6 4.1c2.3-.2 4.1 1 6 3.1 1.9-2.1 3.7-3.3 6-3.1 3.9.4 5.7 4.5 4 7.7C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E")}
+.h1{font-family:var(--display);font-size:clamp(2.1rem,5vw,3.4rem);letter-spacing:-.02em}
+.h2{font-family:var(--display);font-size:clamp(1.8rem,3.8vw,2.8rem);letter-spacing:-.015em}
+.h2 em,.h1 em{color:var(--rose);font-style:italic}
+.lead{font-size:1.06rem;color:var(--ink-2);max-width:34rem}
+.link-arrow{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.95rem;border-bottom:1.5px solid currentColor;padding-bottom:2px;transition:gap .25s var(--ease),color .2s}
+.link-arrow:hover{gap:12px;color:var(--rose)}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+
+/* =========================================================================
+   BUTTONS & CONTROLS
+   ========================================================================= */
+.btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:700;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;border:1.5px solid transparent;transition:background .25s,color .25s,border-color .25s,transform .3s var(--spring),box-shadow .3s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-130%);transition:transform .8s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn:hover::after{transform:translateX(130%)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn svg{flex:none}
+.btn--lg{min-height:56px;padding:0 30px}
+.btn--sm{min-height:38px;padding:0 16px;font-size:.76rem}
+.btn--block{width:100%}
+.btn--grow{flex:1}
+.btn--primary{background:var(--ink);color:#fff}
+.btn--primary:hover{background:var(--rose);box-shadow:0 12px 28px rgba(196,45,99,.35)}
+.btn--pink{background:linear-gradient(135deg,var(--pink),var(--rose));color:#fff;box-shadow:0 10px 24px rgba(232,71,139,.3)}
+.btn--pink:hover{box-shadow:0 16px 34px rgba(232,71,139,.45)}
+.btn--outline{border-color:var(--ink);color:var(--ink);background:rgba(255,255,255,.6)}
+.btn--outline:hover{background:var(--ink);color:#fff}
+.btn--white{background:#fff;color:var(--ink)}
+.btn--white:hover{background:var(--blush-2)}
+.btn--whatsapp{background:var(--green);color:#fff;text-transform:none;letter-spacing:.01em;font-size:.98rem}
+.btn--whatsapp:hover{background:var(--green-dark);box-shadow:0 12px 28px rgba(29,138,76,.32)}
+.btn--icon{width:48px;padding:0;flex:none}
+.btn.is-done{background:var(--rose)}
+.icon-btn{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:999px;transition:background .2s,color .2s,transform .3s var(--spring)}
+.icon-btn:hover{background:var(--blush);color:var(--rose);transform:scale(1.08)}
+.icon-btn--sm{width:32px;height:32px}
+.icon-btn.wiggle{animation:wiggle .6s var(--ease)}
+@keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg) scale(1.15)}40%{transform:rotate(12deg) scale(1.15)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
+.dot-count{position:absolute;top:4px;right:2px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--pink);color:#fff;font-size:.68rem;font-weight:700;line-height:18px;text-align:center;animation:pop .4s var(--spring)}
+@keyframes pop{0%{transform:scale(.3)}100%{transform:scale(1)}}
+
+.input{width:100%;min-height:48px;padding:12px 16px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;font-size:1rem;transition:border-color .2s,box-shadow .2s;resize:vertical}
+.input:hover{border-color:var(--blush-2)}
+.input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 4px rgba(232,71,139,.14)}
+.input--lg{min-height:56px;font-size:1.15rem}
+.input::placeholder{color:#a3979b}
+.field{border:0;margin:0 0 20px;padding:0;min-width:0}
+.field[hidden]{display:none}
+.field__top{display:flex;justify-content:space-between;align-items:baseline}
+.field__label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.9rem;margin-bottom:10px;padding:0}
+.field__value{font-weight:400;color:var(--muted)}
+.field__count{font-size:.75rem;color:var(--muted)}
+.field__help{font-size:.8rem;color:var(--muted);margin-top:6px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:.9rem;font-weight:500;cursor:pointer;transition:border-color .2s,background .2s,color .2s,transform .3s var(--spring);white-space:nowrap;user-select:none}
+.chip:hover{border-color:var(--pink);color:var(--rose);transform:translateY(-2px)}
+.chip.is-selected{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip:has(input:focus-visible){outline:2px solid var(--rose);outline-offset:2px}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.swatch{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:999px;border:2px solid transparent;cursor:pointer;transition:border-color .2s,transform .3s var(--spring)}
+.swatch:hover{transform:scale(1.12)}
+.swatch.is-selected{border-color:var(--ink)}
+.swatch:has(input:focus-visible){outline:2px solid var(--rose);outline-offset:2px}
+.swatch__dot{display:grid;place-items:center;width:34px;height:34px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);color:#fff}
+.swatch__dot svg{filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.swatch__dot--pictured{background:conic-gradient(#f4afc4,#b8a5e6,#78d2cc,#f5cb45,#f4afc4)}
+.swatch--picker input[type=color]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.swatch--picker .swatch__dot{background:conic-gradient(red,#ff0,lime,cyan,blue,#f0f,red)}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:#fff;height:54px;flex:none}
+.qty button{width:44px;height:100%;display:grid;place-items:center;border-radius:999px;transition:color .2s}
+.qty button:hover{color:var(--rose)}
+.qty button:disabled{opacity:.35;cursor:default}
+.qty output{min-width:24px;text-align:center;font-weight:700}
+.qty--sm{height:36px}.qty--sm button{width:34px}
+.select select{appearance:none;min-height:42px;padding:0 38px 0 16px;border:1.5px solid var(--line);border-radius:999px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%232b2326' stroke-width='2'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 14px center;font-size:.9rem;font-weight:500;cursor:pointer}
+
+/* =========================================================================
+   IMAGES
+   ========================================================================= */
+.img{width:100%;height:100%;object-fit:cover;background:linear-gradient(110deg,var(--blush) 30%,#fff5f8 50%,var(--blush) 70%) 0 0/200% 100%;animation:shimmer 1.4s linear infinite;opacity:0;transition:opacity .6s var(--ease),transform 1s var(--ease)}
+.img.is-ready{opacity:1;animation:none;background:var(--cream)}
+.img.is-error{opacity:1;animation:none;background:var(--blush)}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* =========================================================================
+   FLOATING HEARTS / SPARKLES / BURSTS  (the "pinky life")
+   ========================================================================= */
+.hearts{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.heart-f{position:absolute;bottom:-50px;left:var(--x);width:var(--s);height:var(--s);color:var(--c);opacity:0;animation:rise var(--d) linear var(--delay) infinite;will-change:transform}
+.heart-f svg{width:100%;height:100%;animation:sway calc(var(--d) / 3) ease-in-out infinite alternate}
+@keyframes rise{0%{transform:translateY(0) rotate(var(--r));opacity:0}10%{opacity:var(--o)}80%{opacity:var(--o)}100%{transform:translateY(calc(-1 * var(--h,700px))) rotate(calc(var(--r) * -1));opacity:0}}
+@keyframes sway{from{transform:translateX(-16px)}to{transform:translateX(16px)}}
+.sparkle{position:absolute;color:var(--c,#fff);width:var(--s,16px);height:var(--s,16px);animation:twinkle var(--d,2.4s) ease-in-out var(--delay,0s) infinite;pointer-events:none}
+@keyframes twinkle{0%,100%{transform:scale(.3) rotate(0);opacity:.2}50%{transform:scale(1) rotate(90deg);opacity:1}}
+.burst-heart{position:fixed;z-index:300;width:18px;height:18px;pointer-events:none;color:var(--pink)}
+.trail{position:fixed;z-index:5;pointer-events:none;width:12px;height:12px;color:var(--pink);animation:trail .9s var(--ease) forwards}
+@keyframes trail{0%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}100%{transform:translate(-50%,calc(-50% + 30px)) scale(0) rotate(160deg);opacity:0}}
+.fly{position:fixed;z-index:300;border-radius:14px;object-fit:cover;pointer-events:none;box-shadow:var(--shadow-lg)}
+
+/* reveal on scroll */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--i,0) * 80ms)}
+[data-reveal="zoom"]{transform:scale(.92)}
+[data-reveal="left"]{transform:translateX(-36px)}
+[data-reveal="right"]{transform:translateX(36px)}
+[data-reveal].in{opacity:1;transform:none}
+
+/* marquees */
+.marquee{overflow:hidden;display:flex}
+.marquee__track{display:flex;flex:none;width:max-content;animation:marquee var(--speed,32s) linear infinite}
+.marquee--reverse .marquee__track{animation-direction:reverse}
+.marquee:hover .marquee__track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* calm mode (footer toggle) */
+.calm .heart-f,.calm .sparkle,.calm .trail{display:none}
+.calm .marquee__track,.calm .float,.calm .hero__stamp-text,.calm .eyebrow::before,.calm .beat{animation:none!important}
+
+/* =========================================================================
+   ANNOUNCEMENT + HEADER
+   ========================================================================= */
+.announce{background:linear-gradient(90deg,var(--rose),var(--pink),var(--rose));color:#fff;font-size:.8rem;font-weight:600;letter-spacing:.06em;height:36px;display:flex;align-items:center}
+.announce .marquee__track span{display:inline-flex;align-items:center;gap:22px;padding-right:22px;white-space:nowrap}
+.announce svg{width:12px;height:12px}
+.header{position:sticky;top:0;z-index:40;background:rgba(255,249,247,.9);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
+.header.is-scrolled{border-color:var(--line);box-shadow:0 8px 24px rgba(196,45,99,.06)}
+.header__inner{display:flex;align-items:center;height:var(--header-h);gap:16px;transition:height .3s var(--ease)}
+.header.is-scrolled .header__inner{height:calc(var(--header-h) - 8px)}
+.logo{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:1.45rem;font-weight:500;font-style:italic;letter-spacing:-.01em;white-space:nowrap}
+.logo svg{width:18px;height:18px;color:var(--pink);transition:transform .4s var(--spring)}
+.logo:hover svg{transform:scale(1.3) rotate(-12deg)}
+.header__nav{display:none;gap:28px;margin:0 auto;font-size:.92rem;font-weight:500}
+.header__nav a{position:relative;padding:6px 0;transition:color .2s}
+.header__nav a:hover{color:var(--rose)}
+.header__nav a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--pink);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.header__nav a:hover::after,.header__nav a.is-active::after{transform:scaleX(1)}
+.header__nav .nav-3d{color:var(--rose);font-weight:700}
+.header__nav .nav-3d span{font-size:.62rem;background:var(--pink);color:#fff;border-radius:99px;padding:2px 6px;margin-left:4px;vertical-align:2px}
+.header__icons{display:flex;margin-left:auto}
+.header__burger{margin-left:-10px}
+@media (max-width:1099px){
+  .header__inner{display:grid;grid-template-columns:1fr auto 1fr;gap:0}
+  .header__inner .logo{justify-self:center;font-size:1.32rem}
+  .header__icons{justify-self:end}
+  .header__fav{display:none!important}
+}
+@media (min-width:1100px){.header__burger{display:none}.header__nav{display:flex}.header__icons{margin-left:0}}
+
+/* =========================================================================
+   OVERLAYS
+   ========================================================================= */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(43,35,38,.4);visibility:hidden;opacity:0;transition:opacity .3s var(--ease),visibility 0s .3s}
+.overlay.is-open{visibility:visible;opacity:1;transition:opacity .3s var(--ease)}
+.menu{position:absolute;inset:0 auto 0 0;width:min(88vw,380px);background:var(--bg);padding:12px 20px 28px;overflow-y:auto;transform:translateX(-100%);transition:transform .45s var(--ease);display:flex;flex-direction:column}
+.is-open .menu{transform:none}
+.menu__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.menu__links{display:flex;flex-direction:column}
+.menu__links a{font-family:var(--display);font-size:1.6rem;padding:9px 0;border-bottom:1px solid var(--line);transition:color .2s,padding .3s var(--ease)}
+.menu__links a:hover{color:var(--rose);padding-left:8px}
+.is-open .menu__links a{animation:slideIn .5s var(--ease) backwards}
+.menu__links a:nth-child(2){animation-delay:.05s!important}.menu__links a:nth-child(3){animation-delay:.1s!important}.menu__links a:nth-child(4){animation-delay:.15s!important}.menu__links a:nth-child(5){animation-delay:.2s!important}.menu__links a:nth-child(6){animation-delay:.25s!important}.menu__links a:nth-child(7){animation-delay:.3s!important}
+@keyframes slideIn{from{opacity:0;transform:translateX(-24px)}}
+.menu__label{margin:26px 0 12px;font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.menu__cats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu__cat{display:flex;align-items:center;gap:10px;padding:6px;border-radius:var(--radius-sm);background:var(--blush);font-size:.85rem;font-weight:500;line-height:1.25}
+.menu__cat img{width:44px;height:55px;border-radius:8px;object-fit:cover;flex:none}
+.menu__wa{margin-top:28px}
+.overlay--search{background:rgba(43,35,38,.3)}
+.search{background:var(--bg);padding:16px var(--gutter) 26px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:translateY(-30px);transition:transform .4s var(--ease)}
+.is-open .search{transform:none}
+.search__form{display:flex;align-items:center;gap:10px;max-width:760px;margin:0 auto;border-bottom:1.5px solid var(--ink);padding:6px 0}
+.search__form input{flex:1;min-width:0;border:0;background:transparent;font-size:1.2rem;padding:10px 0}
+.search__form input:focus{outline:none}
+.search__label{max-width:760px;margin:18px auto 8px;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.search__results{list-style:none;padding:0;margin:0 auto;max-width:760px;display:grid;gap:4px}
+.search__results a{display:flex;align-items:center;gap:14px;padding:8px;border-radius:var(--radius-sm);transition:background .2s}
+.search__results a:hover{background:var(--blush)}
+.search__results img{width:48px;height:60px;object-fit:cover;border-radius:8px}
+.search__results strong{display:block;font-weight:500}
+.search__results small{color:var(--muted)}
+.search .link-arrow{display:flex;width:fit-content;margin:14px auto 0}
+.drawer{position:absolute;inset:0 0 0 auto;width:min(100vw,440px);background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .45s var(--ease);box-shadow:var(--shadow-lg)}
+.is-open .drawer{transform:none}
+.drawer__head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 14px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--blush),var(--bg))}
+.drawer__head h2{font-family:var(--display);font-size:1.5rem}
+.drawer__count{font-family:var(--sans);font-size:.95rem;color:var(--muted)}
+.drawer__items{list-style:none;margin:0;padding:6px 22px;overflow-y:auto;flex:1}
+.line{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);animation:slideIn .4s var(--ease)}
+.line:last-child{border-bottom:0}
+.line__img img{width:76px;height:95px;object-fit:cover;border-radius:12px;background:var(--blush)}
+.line__body{flex:1;min-width:0}
+.line__top{display:flex;justify-content:space-between;gap:10px}
+.line__name{font-weight:700;line-height:1.3}
+.line__price{font-weight:700;white-space:nowrap}
+.line__opts{margin:6px 0 10px;font-size:.8rem;color:var(--muted);line-height:1.45}
+.line__opts div{display:flex;gap:4px}
+.line__opts dt{flex:none}
+.line__opts dd{margin:0;color:var(--ink-2);overflow-wrap:anywhere}
+.line__actions{display:flex;align-items:center;justify-content:space-between}
+.line__remove{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;color:var(--muted);padding:8px 0 8px 8px;transition:color .2s}
+.line__remove:hover{color:var(--rose)}
+.drawer__foot{padding:16px 22px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+.drawer__foot .field{margin-bottom:14px}
+.drawer__foot .field__label{font-weight:500;font-size:.85rem;margin-bottom:6px}
+.drawer__foot .input{min-height:44px;padding:10px 14px;font-size:.95rem}
+.drawer__total{display:flex;justify-content:space-between;align-items:baseline;font-size:1.05rem}
+.drawer__total strong{font-size:1.3rem}
+.fine{font-size:.8rem;color:var(--muted);margin:4px 0 14px}
+.fine--center{text-align:center;margin:10px 0 0}
+.drawer__empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:30px;text-align:center;color:var(--muted)}
+.drawer__empty .big-heart{width:64px;height:64px;color:var(--bubble);animation:beat 1.6s ease-in-out infinite}
+.drawer__empty-title{font-family:var(--display);font-size:1.5rem;color:var(--ink)}
+.overlay--center{display:grid;place-items:center;padding:24px}
+.modal{position:relative;width:min(1040px,100%);max-height:calc(100vh - 48px);overflow-y:auto;background:var(--bg);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:28px;transform:translateY(30px) scale(.97);transition:transform .45s var(--spring)}
+.is-open .modal{transform:none}
+.modal__close{position:absolute;top:12px;right:12px;z-index:3;background:#fff;box-shadow:var(--shadow-sm)}
+@media (max-width:640px){.overlay--center{padding:0;align-items:end}.modal{border-radius:var(--radius) var(--radius) 0 0;max-height:92vh;padding:18px var(--gutter) 24px}}
+
+/* toast + floating whatsapp */
+.toast-region{position:fixed;z-index:70;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(440px,calc(100vw - 24px));pointer-events:none}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:12px;padding:10px;background:var(--ink);color:#fff;border-radius:18px;box-shadow:var(--shadow-lg);animation:toastIn .5s var(--spring)}
+@keyframes toastIn{from{transform:translateY(30px) scale(.9);opacity:0}}
+.toast img{width:40px;height:50px;object-fit:cover;border-radius:8px}
+.toast__body{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3;font-size:.85rem}
+.toast__body span{opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast__action{font-weight:700;font-size:.85rem;padding:10px 14px;border-radius:999px;background:#fff;color:var(--ink);white-space:nowrap}
+.toast .icon-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.wa-float{position:fixed;z-index:30;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;height:56px;padding:0 15px;border-radius:999px;background:var(--green);color:#fff;box-shadow:0 10px 28px rgba(29,138,76,.35);transition:transform .4s var(--spring),opacity .3s,background .2s}
+.wa-float::before{content:'';position:absolute;inset:0;border-radius:inherit;border:2px solid var(--green);animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.45);opacity:0}}
+.wa-float:hover{background:var(--green-dark);transform:scale(1.06)}
+.wa-float__label{display:none;font-weight:700;font-size:.9rem;padding-right:4px}
+@media (min-width:860px){.wa-float{right:24px;bottom:24px}.wa-float__label{display:inline}}
+.wa-float.is-hidden{transform:translateY(120px);opacity:0;pointer-events:none}
+
+/* =========================================================================
+   SECTIONS
+   ========================================================================= */
+.section{position:relative;padding:64px 0}
+@media (min-width:860px){.section{padding:100px 0}}
+.section--cream{background:var(--cream)}
+.section--blush{background:var(--blush)}
+.section-head{margin-bottom:28px;max-width:640px}
+.section-head--center{text-align:center;margin-left:auto;margin-right:auto;margin-bottom:40px}
+.section-head--center .eyebrow{justify-content:center}
+.section-head__text{margin-top:10px;color:var(--muted);font-size:1.04rem}
+.section-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.section-row .section-head{margin-bottom:0}
+.center-cta{display:flex;justify-content:center;margin-top:36px}
+@media (max-width:640px){.hide-sm{display:none!important}}
+.wave{display:block;width:100%;height:46px;margin-bottom:-1px}
+.wave--flip{transform:scaleY(-1);margin-top:-1px;margin-bottom:0}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;overflow:hidden;background:radial-gradient(110% 80% at 85% 0%,#ffd9e6 0%,transparent 60%),radial-gradient(80% 60% at 0% 100%,var(--lavender) 0%,transparent 55%),var(--bg)}
+.hero__inner{position:relative;z-index:1;display:grid;gap:22px;padding-top:14px;padding-bottom:48px}
+.hero__media{position:relative;display:grid;grid-template-columns:1fr .62fr;grid-template-rows:1fr 1fr;gap:10px;height:262px}
+.hero__media>.par{position:relative;min-height:0;transition:transform .5s var(--ease)}
+.hero__main{grid-row:span 2}
+.hero__frame{height:100%;overflow:hidden;background:var(--cream);box-shadow:var(--shadow);border:4px solid #fff}
+.hero__main .hero__frame{border-radius:160px 160px var(--radius) var(--radius)}
+.hero__side .hero__frame{border-radius:var(--radius)}
+.hero__side--top .hero__frame{border-radius:var(--radius) 70px var(--radius) var(--radius)}
+.hero__side--top .img{object-position:center 30%}
+.hero__side--bottom .img{object-position:center 85%}
+.float{animation:floaty 6s ease-in-out infinite}
+.float--2{animation-duration:7s;animation-delay:-2s}
+.float--3{animation-duration:5.5s;animation-delay:-4s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero__stamp{position:absolute;z-index:3;width:84px;left:-6px;bottom:-12px;color:var(--ink);filter:drop-shadow(0 8px 18px rgba(196,45,99,.2))}
+.hero__stamp-text{transform-origin:60px 60px;animation:spin 18s linear infinite;font-family:var(--sans);font-weight:700}
+.hero__stamp .beat{transform-origin:60px 60px;animation:beat 1.6s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero__badge{position:absolute;z-index:3;right:-4px;top:30%;background:#fff;border-radius:999px;padding:8px 14px 8px 10px;display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;box-shadow:var(--shadow);transform:rotate(4deg)}
+.hero__badge i{display:grid;place-items:center;width:26px;height:26px;border-radius:99px;background:var(--blush);color:var(--pink)}
+.hero__badge svg{width:14px;height:14px}
+.hero__eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--rose);margin-bottom:10px}
+.hero__eyebrow svg{width:14px;height:14px;color:var(--pink);flex:none}
+.hero__title{font-family:var(--display);font-size:clamp(2.4rem,11vw,5.4rem);line-height:1;letter-spacing:-.03em}
+.hero__title>span{display:block;overflow:hidden;padding-bottom:.06em}
+.hero__title>span>span{display:inline-block;animation:lineUp .9s var(--ease) backwards}
+.hero__title>span:nth-child(2)>span{animation-delay:.12s}
+.hero__title>span:nth-child(3)>span{animation-delay:.24s}
+@keyframes lineUp{from{transform:translateY(105%)}}
+.hero__title .accent{position:relative;font-style:italic;color:var(--rose)}
+.squiggle{position:absolute;left:0;bottom:-.12em;width:100%;height:.3em;overflow:visible}
+.squiggle path{fill:none;stroke:var(--bubble);stroke-width:5;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.2s var(--ease) .9s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero__lead{margin-top:12px;font-size:1rem;color:var(--ink-2);max-width:30rem;animation:fadeUp .8s var(--ease) .35s backwards}
+.hero__ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;animation:fadeUp .8s var(--ease) .45s backwards}
+.hero__points{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.86rem;color:var(--muted);animation:fadeUp .8s var(--ease) .55s backwards}
+.hero__points li{display:flex;align-items:center;gap:7px}
+.hero__points svg{width:13px;height:13px;color:var(--pink)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}}
+@media (max-width:640px){.hero__ctas .btn{width:100%}}
+@media (min-width:860px){
+  .hero__inner{grid-template-columns:1fr 1fr;align-items:center;gap:56px;padding-top:48px;padding-bottom:96px}
+  .hero__text{order:-1}
+  .hero__media{height:620px;gap:16px}
+  .hero__main .hero__frame{border-radius:999px 999px var(--radius) var(--radius)}
+  .hero__stamp{width:130px;left:-44px;bottom:40px}
+  .hero__badge{right:-18px;font-size:.85rem}
+  .hero__eyebrow{padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:.8rem;font-weight:500;color:var(--ink-2);letter-spacing:0;margin-bottom:18px}
+  .hero__lead{margin-top:18px;font-size:1.1rem}
+  .hero__ctas{margin-top:28px;gap:12px}
+  .hero__points{margin-top:26px}
+}
+
+/* ---------- RIBBONS ---------- */
+.ribbons{position:relative;height:120px;overflow:hidden;margin:-30px 0;z-index:2;pointer-events:none}
+.ribbon{position:absolute;left:-5%;width:110%;padding:12px 0;font-family:var(--display);font-style:italic;font-size:1.3rem;box-shadow:0 10px 30px rgba(196,45,99,.18);pointer-events:auto}
+.ribbon--pink{top:22px;background:linear-gradient(90deg,var(--pink),var(--bubble),var(--pink));color:#fff;transform:rotate(-2.5deg)}
+.ribbon--dark{top:50px;background:var(--ink);color:#fff;transform:rotate(2deg);z-index:-1;opacity:.95}
+.ribbon .marquee__track span{display:inline-flex;align-items:center;gap:26px;padding-right:26px;white-space:nowrap}
+.ribbon svg{width:20px;height:20px;color:#fff}
+.ribbon--dark svg{color:var(--bubble)}
+@media (min-width:860px){.ribbons{height:150px}.ribbon{font-size:1.7rem;padding:14px 0}.ribbon--pink{top:28px}.ribbon--dark{top:66px}}
+
+/* ---------- CATEGORIES ---------- */
+.cats{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gutter) * -1);padding:6px var(--gutter) 10px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{scroll-snap-align:start;display:block}
+.cat__media{position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;margin-bottom:12px;transition:transform .45s var(--spring),box-shadow .45s;box-shadow:var(--shadow-sm)}
+.cat__media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(196,45,99,.35));opacity:0;transition:opacity .4s}
+.cat__go{position:absolute;z-index:2;right:10px;bottom:10px;display:grid;place-items:center;width:38px;height:38px;border-radius:99px;background:#fff;color:var(--rose);transform:scale(0) rotate(-90deg);transition:transform .45s var(--spring)}
+.cat__go svg{width:16px;height:16px}
+.cat:hover .cat__media{transform:translateY(-8px) rotate(-1.5deg);box-shadow:var(--shadow)}
+.cat:nth-child(even):hover .cat__media{transform:translateY(-8px) rotate(1.5deg)}
+.cat:hover .cat__media::after{opacity:1}
+.cat:hover .cat__go{transform:none}
+.cat:hover .img{transform:scale(1.07)}
+.cat__name{font-family:var(--display);font-size:1.15rem;transition:color .2s}
+.cat:hover .cat__name{color:var(--rose)}
+.cat__desc{font-size:.84rem;color:var(--muted);margin-top:2px;line-height:1.4}
+@media (min-width:640px){.cats{grid-auto-columns:28%}}
+@media (min-width:1100px){.cats{grid-auto-flow:row;grid-template-columns:repeat(6,1fr);overflow:visible;margin:0;padding:0;gap:18px}}
+
+/* ---------- PRODUCT GRID & CARDS ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}
+@media (min-width:860px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 20px}}
+@media (min-width:1100px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:44px 24px}}
+.card{position:relative;min-width:0}
+.card__media{position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;background:var(--cream);transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0));transition:transform .5s var(--ease),box-shadow .5s}
+.card:hover .card__media{--ty:-6px;box-shadow:0 22px 40px rgba(196,45,99,.18)}
+.card__link{display:block;height:100%}
+.card__alt{position:absolute;inset:0;opacity:0!important}
+.card:hover .card__media .img{transform:scale(1.05)}
+.card:hover .card__alt.is-ready{opacity:1!important}
+.card__shine{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 45%);opacity:0;transition:opacity .3s}
+.card:hover .card__shine{opacity:1}
+.card__badges{position:absolute;top:10px;left:10px;right:56px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#fff;color:var(--rose);box-shadow:var(--shadow-sm)}
+.badge svg{width:10px;height:10px}
+.badge--new{background:var(--ink);color:#fff}
+.card__fav{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.94);box-shadow:var(--shadow-sm);transition:transform .35s var(--spring),color .2s}
+.card__fav:hover{transform:scale(1.15);color:var(--pink)}
+.card__fav svg,.pdp__fav svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}
+.is-saved{color:var(--pink)!important}
+.is-saved svg{fill:currentColor!important;animation:beat .8s ease}
+.card__quick{position:absolute;left:12px;right:12px;bottom:12px;display:none;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:999px;background:rgba(255,255,255,.96);font-weight:700;font-size:.85rem;box-shadow:var(--shadow);transform:translateY(16px);opacity:0;transition:transform .4s var(--spring),opacity .3s,background .2s,color .2s}
+.card__quick:hover{background:var(--pink);color:#fff}
+.card__quick svg{width:16px;height:16px}
+@media (min-width:860px){.card__quick{display:flex}.card:hover .card__quick,.card__quick:focus-visible{transform:none;opacity:1}}
+.card__body{display:flex;flex-direction:column;padding-top:12px}
+.card__cat{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card__name{font-family:var(--sans);font-size:.98rem;font-weight:500;line-height:1.3;margin:3px 0 4px;transition:color .2s}
+.card:hover .card__name{color:var(--rose)}
+.card__price{font-weight:700}
+@media (max-width:640px){.card__badges .badge:nth-child(n+2){display:none}.badge{font-size:.58rem;padding:3px 8px}}
+.custom-card{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;aspect-ratio:4/5;padding:20px;border-radius:var(--radius);border:1.5px dashed var(--pink);background:var(--blush);text-align:center;transition:transform .4s var(--spring)}
+.custom-card:hover{transform:translateY(-6px)}
+.custom-card>*:not(.hearts){position:relative;z-index:1}
+.custom-card .cube{width:44px;height:44px;color:var(--pink)}
+.custom-card strong{font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.2}
+.custom-card>span:not(.btn){font-size:.85rem;color:var(--muted);margin-bottom:8px}
+
+/* ---------- GIFT BANNER ---------- */
+.gift{position:relative;overflow:hidden;border-radius:32px;padding:56px 24px;color:#fff;text-align:center;background:linear-gradient(135deg,#ff7aa8 0%,var(--pink) 45%,var(--rose) 100%)}
+.gift::before{content:'';position:absolute;inset:0;opacity:.14;background-image:var(--heart-mask);background-size:46px;background-color:transparent;-webkit-mask:none;filter:invert(1);background-repeat:repeat;animation:pattern 30s linear infinite}
+@keyframes pattern{to{background-position:460px 460px}}
+.gift>*:not(.hearts){position:relative;z-index:1}
+.gift .eyebrow{color:#fff}
+.gift .h2{color:#fff;max-width:18ch;margin:0 auto}
+.gift p.lead{color:rgba(255,255,255,.9);margin:14px auto 26px}
+.occasions{margin:0 calc(-24px) 28px}
+.occasions .marquee__track a{display:inline-flex;align-items:center;gap:8px;margin-right:10px;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-weight:600;white-space:nowrap;transition:background .2s,color .2s,transform .3s var(--spring)}
+.occasions .marquee__track a:hover{background:#fff;color:var(--rose);transform:translateY(-3px)}
+.occasions svg{width:14px;height:14px}
+@media (min-width:860px){.gift{padding:88px 60px}.occasions{margin:0 -60px 32px}}
+
+/* ---------- 3D TEASER ---------- */
+.teaser{background:linear-gradient(180deg,var(--bg),var(--lavender));overflow:hidden}
+.teaser__inner{display:grid;gap:32px;align-items:center}
+.teaser__preview{position:relative;justify-self:center;width:min(270px,70vw);aspect-ratio:1/1.35;display:grid;place-items:center;padding:22px;border-radius:999px 999px var(--radius) var(--radius);background:#fff;box-shadow:var(--shadow)}
+.teaser__preview svg.cup-preview{position:relative;z-index:1;height:100%;animation:cupSpin 5s ease-in-out infinite}
+@keyframes cupSpin{0%,100%{transform:perspective(500px) rotateY(-14deg)}50%{transform:perspective(500px) rotateY(14deg)}}
+.teaser__badge{position:absolute;z-index:2;top:16px;right:-10px;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:.78rem;transform:rotate(6deg)}
+.teaser__badge svg{width:16px;height:16px}
+.teaser__list{list-style:none;padding:0;margin:18px 0 26px;display:grid;gap:10px}
+.teaser__list li{display:flex;gap:10px;align-items:center;font-weight:500}
+.teaser__list i{display:grid;place-items:center;width:30px;height:30px;border-radius:99px;background:#fff;color:var(--pink);box-shadow:var(--shadow-sm);flex:none}
+.teaser__list svg{width:15px;height:15px}
+.caret{display:inline-block;width:2px;height:1em;background:var(--rose);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (min-width:860px){.teaser__inner{grid-template-columns:.9fr 1.1fr;gap:80px}.teaser__preview{width:360px}}
+
+/* ---------- HOW IT WORKS ---------- */
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:14px;counter-reset:s}
+.step{position:relative;padding:26px 24px;border-radius:var(--radius);background:#fff;border:1px solid var(--line);transition:transform .45s var(--spring),box-shadow .45s,border-color .3s}
+.step:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:var(--blush-2)}
+.step__icon{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--blush);color:var(--pink);margin-bottom:16px;transition:transform .5s var(--spring),background .3s,color .3s}
+.step__icon svg{width:24px;height:24px}
+.step:hover .step__icon{transform:rotate(-10deg) scale(1.1);background:var(--pink);color:#fff}
+.step__num{position:absolute;top:18px;right:22px;font-family:var(--display);font-style:italic;font-size:2.4rem;line-height:1;color:var(--blush-2)}
+.step h3{font-family:var(--display);font-size:1.3rem;margin-bottom:6px}
+.step p{color:var(--muted);font-size:.95rem}
+@media (min-width:640px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1100px){.steps{grid-template-columns:repeat(4,1fr);gap:20px}}
+
+/* ---------- ABOUT ---------- */
+.about{display:grid;gap:40px;align-items:center}
+.about>*{min-width:0}
+.about__media{position:relative;padding-right:22%;padding-bottom:14%}
+.about__photo{overflow:hidden;border-radius:var(--radius);aspect-ratio:4/5;box-shadow:var(--shadow)}
+.about__photo--main{border-radius:999px 999px var(--radius) var(--radius)}
+.about__photo--small{position:absolute;right:0;bottom:0;width:44%;border:6px solid var(--blush)}
+.about__sticker{position:absolute;z-index:2;left:-6px;top:12%;width:70px;height:70px;color:var(--pink);filter:drop-shadow(0 8px 14px rgba(196,45,99,.25))}
+.about__text .lead{margin:16px 0 18px;font-size:1.12rem}
+.about__loc{display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:26px}
+.about__loc svg{width:16px;height:16px;color:var(--pink)}
+@media (min-width:860px){.about{grid-template-columns:1fr 1fr;gap:96px}.about__media{max-width:520px}}
+
+/* ---------- PHOTO MARQUEE ---------- */
+.reel{display:grid;gap:14px}
+.reel .marquee__track a{display:block;width:180px;aspect-ratio:4/5;margin-right:14px;border-radius:var(--radius);overflow:hidden;flex:none;transition:transform .45s var(--spring)}
+.reel .marquee__track a:nth-child(odd){transform:rotate(-2deg)}
+.reel .marquee__track a:nth-child(even){transform:rotate(2deg)}
+.reel .marquee__track a:hover{transform:rotate(0) scale(1.06)}
+@media (min-width:860px){.reel .marquee__track a{width:240px}}
+
+/* ---------- REVIEWS ---------- */
+.reviews{display:grid;gap:16px}
+@media (min-width:860px){.reviews{grid-template-columns:repeat(3,1fr)}}
+.review{margin:0;padding:28px;border-radius:var(--radius);background:#fff}
+.review blockquote{margin:0 0 16px;font-family:var(--display);font-size:1.15rem}
+.review figcaption{font-weight:700;font-size:.9rem}
+
+/* ---------- FINAL CTA ---------- */
+.final-cta{padding:24px 0 72px}
+.final-cta__box{position:relative;overflow:hidden;text-align:center;padding:60px 24px;border-radius:32px;background:var(--ink);color:#fff}
+.final-cta__box>*:not(.hearts){position:relative;z-index:1}
+.final-cta__box p{margin:14px auto 28px;color:rgba(255,255,255,.8);max-width:28rem;font-size:1.05rem}
+.final-cta__photos{display:none;position:static!important}
+.final-cta__heart{width:44px;height:44px;margin:0 auto 14px;color:var(--bubble)}
+@media (min-width:860px){
+  .final-cta{padding:40px 0 112px}
+  .final-cta__box{padding:96px 30%}
+  .final-cta__photos{display:block}
+  .final-cta__photos img{position:absolute;z-index:2;width:200px;height:250px;object-fit:cover;border-radius:var(--radius);box-shadow:var(--shadow-lg);border:5px solid #fff;top:50%;transition:transform .6s var(--spring)}
+  .final-cta__photos img:first-child{left:6%;transform:translateY(-50%) rotate(-7deg)}
+  .final-cta__photos img:last-child{right:6%;transform:translateY(-50%) rotate(7deg)}
+  .final-cta__box:hover .final-cta__photos img:first-child{transform:translateY(-54%) rotate(-12deg) scale(1.05)}
+  .final-cta__box:hover .final-cta__photos img:last-child{transform:translateY(-54%) rotate(12deg) scale(1.05)}
+}
+
+/* ---------- FOOTER ---------- */
+.footer{background:var(--blush);padding:44px 0 calc(90px + env(safe-area-inset-bottom));font-size:.92rem}
+.footer__grid{display:grid;gap:36px}
+.footer h3{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:14px}
+.footer nav{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.footer nav a{transition:color .2s,transform .3s var(--ease)}
+.footer nav a:hover{color:var(--rose);transform:translateX(4px)}
+.footer__brand p{margin-top:12px;color:var(--ink-2);max-width:22rem}
+.footer__loc{display:flex;align-items:center;gap:6px}
+.footer__loc svg{width:15px;height:15px;color:var(--pink)}
+.footer__text{color:var(--ink-2);margin-bottom:16px;max-width:20rem}
+.footer__bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-top:44px;padding-top:22px;border-top:1px solid var(--blush-2);color:var(--muted);font-size:.82rem}
+.motion-toggle{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid var(--blush-2);font-size:.8rem;transition:background .2s}
+.motion-toggle:hover{background:#fff}
+@media (min-width:640px){.footer__grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){.footer{padding-bottom:40px}.footer__grid{grid-template-columns:1.5fr 1fr 1fr 1.3fr}}
+
+/* =========================================================================
+   SHOP
+   ========================================================================= */
+.shop__hero{position:relative;overflow:hidden;padding:20px 0 24px;background:linear-gradient(180deg,var(--blush),var(--bg))}
+.shop__hero .container{position:relative;z-index:1}
+.crumbs{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.crumbs a:hover{color:var(--rose)}
+.crumbs span[aria-hidden]{margin:0 4px}
+.shop__sub{color:var(--muted);margin-top:6px}
+.shop__bar{padding:12px 0;border-bottom:1px solid var(--line);background:rgba(255,249,247,.95)}
+@media (min-width:641px){.shop__bar{position:sticky;top:calc(var(--header-h) - 8px);z-index:20;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}}
+.chips--scroll{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(var(--gutter) * -1);padding:2px var(--gutter);scrollbar-width:none}
+.chips--scroll::-webkit-scrollbar{display:none}
+.chips--scroll .chip{min-height:38px;font-size:.86rem}
+.shop__tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:10px}
+.search-field{flex:1 1 220px;display:flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:1.5px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);max-width:360px;transition:border-color .2s,box-shadow .2s}
+.search-field:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(232,71,139,.12)}
+.search-field input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-size:.95rem}
+.search-field input:focus{outline:none}
+.search-field input::-webkit-search-cancel-button{display:none}
+.search-field svg{width:17px;height:17px;flex:none}
+.price-filter{display:flex;align-items:center;gap:10px;font-size:.86rem}
+.price-filter input{accent-color:var(--pink)}
+.shop__meta{display:flex;align-items:center;gap:12px;margin-left:auto}
+.shop__count{font-size:.86rem;color:var(--muted);white-space:nowrap}
+@media (max-width:640px){.search-field{flex:1 1 0;max-width:none}.shop__meta{margin-left:0}.shop__count{display:none}}
+.shop__count-sm{display:none;font-size:.85rem;color:var(--muted);margin-bottom:14px}
+@media (max-width:640px){.shop__count-sm{display:block}}
+.shop__body{padding-top:24px;padding-bottom:72px}
+.shop__note{margin-top:40px;text-align:center;font-size:.82rem;color:var(--muted)}
+.empty{text-align:center;padding:48px 16px;max-width:480px;margin:0 auto}
+.empty h2{font-family:var(--display);font-size:1.6rem;margin-bottom:8px}
+.empty p{color:var(--muted);margin-bottom:22px}
+.empty__ctas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.empty--page{padding:96px 16px}
+
+/* =========================================================================
+   PRODUCT DETAIL
+   ========================================================================= */
+.product-page>.container{padding-top:14px;padding-bottom:56px}
+.pdp{display:grid;gap:24px}
+.pdp>*{min-width:0}
+@media (min-width:860px){.pdp{grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}.product-page .pdp__gallery{position:sticky;top:calc(var(--header-h) + 20px)}.product-page>.container{padding-bottom:96px}}
+.pdp__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:var(--radius);scrollbar-width:none;background:var(--cream)}
+.pdp__track::-webkit-scrollbar{display:none}
+.pdp__slide{position:relative;flex:0 0 100%;aspect-ratio:4/5;scroll-snap-align:start;overflow:hidden}
+.pdp__slide .img{transition:transform .3s ease}
+@media (min-width:860px){.pdp__slide:hover .img{transform:scale(1.5);transform-origin:var(--zx,50%) var(--zy,50%);cursor:zoom-in}}
+@media (max-width:640px){.product-page .pdp__gallery{margin:0 calc(var(--gutter) * -1)}.product-page .pdp__track{border-radius:0}.product-page .pdp__thumbs{padding:0 var(--gutter)}}
+.pdp__thumbs{display:flex;gap:10px;margin-top:12px}
+.pdp__thumb{width:64px;aspect-ratio:4/5;border-radius:10px;overflow:hidden;border:2px solid transparent;opacity:.6;transition:opacity .2s,border-color .2s,transform .3s var(--spring)}
+.pdp__thumb:hover{opacity:1;transform:translateY(-3px)}
+.pdp__thumb.is-active{border-color:var(--pink);opacity:1}
+.pdp__title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pdp__title{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.015em}
+.pdp__fav{flex:none;border:1px solid var(--line);margin-top:4px}
+.pdp__price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-top:10px}
+.pdp__price span{font-size:1.4rem;font-weight:700}
+.pdp__price small{font-size:.8rem;color:var(--muted)}
+.pdp__desc{margin-top:14px;color:var(--ink-2)}
+.pdp__personalize{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.pdp__h{font-family:var(--display);font-size:1.3rem;margin-bottom:16px}
+.pdp .field{margin-bottom:18px}
+.add-note{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 20px;font-size:.9rem;font-weight:500;color:var(--ink-2);text-decoration:underline;text-underline-offset:4px;min-height:40px;transition:color .2s}
+.add-note:hover{color:var(--rose)}
+.pdp__buy{display:flex;gap:10px;margin-bottom:10px}
+.pdp__buy .btn{min-height:54px}
+.pdp__3d{display:flex;align-items:center;gap:12px;margin-top:14px;padding:14px 16px;border-radius:var(--radius-sm);background:linear-gradient(90deg,var(--blush),var(--lavender));font-size:.9rem;font-weight:600;transition:transform .35s var(--spring)}
+.pdp__3d:hover{transform:translateY(-3px)}
+.pdp__3d svg{width:26px;height:26px;color:var(--pink);flex:none}
+.pdp__3d span{flex:1}
+.pdp__features{list-style:none;padding:18px 0 0;margin:20px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-size:.88rem;color:var(--ink-2)}
+.pdp__features li{display:flex;gap:8px;align-items:flex-start;line-height:1.35}
+.pdp__features svg{width:16px;height:16px;color:var(--pink);flex:none;margin-top:1px}
+.pdp__note{display:flex;gap:12px;margin-top:20px;padding:16px 18px;border-radius:var(--radius-sm);background:var(--cream);font-size:.88rem}
+.pdp__note svg{width:18px;height:18px;color:var(--pink);flex:none;margin-top:2px}
+.pdp__note p{color:var(--ink-2);margin-top:2px}
+.pdp__made{display:flex;align-items:center;gap:6px;margin-top:16px;font-size:.85rem;color:var(--muted)}
+.pdp__made svg{width:15px;height:15px;color:var(--pink)}
+.pdp--compact .link-arrow{margin-top:16px}
+.sticky-buy{position:fixed;z-index:35;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(43,35,38,.06);transform:translateY(110%);transition:transform .4s var(--ease)}
+.sticky-buy.is-visible{transform:none}
+.sticky-buy__info{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.sticky-buy__name{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sticky-buy__price{font-weight:700}
+.sticky-buy .btn{min-height:48px;padding:0 18px}
+@media (min-width:860px){.sticky-buy{display:none}}
+.grid--related{margin-top:28px}
+@media (max-width:1099px){.grid--related{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* =========================================================================
+   3D DESIGNER
+   ========================================================================= */
+.designer{background:linear-gradient(180deg,var(--blush) 0,var(--bg) 420px)}
+.designer__inner{display:grid;gap:18px;padding-top:12px;padding-bottom:72px}
+.designer__inner>*{min-width:0}
+.stage-wrap{position:sticky;top:calc(var(--header-h) - 8px);z-index:10;margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter) 8px;background:linear-gradient(180deg,var(--blush) 80%,transparent)}
+.stage{position:relative;height:44vh;min-height:280px;max-height:460px;border-radius:28px;overflow:hidden;background:radial-gradient(circle at 50% 38%,#fff 0,#fff5f9 38%,#f9d6e3 100%);box-shadow:var(--shadow);touch-action:none}
+.stage canvas{position:relative;z-index:1;display:block;width:100%!important;height:100%!important;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.stage .hearts{z-index:0}
+.stage__loading{position:absolute;inset:0;z-index:2;display:grid;place-items:center;align-content:center;gap:12px;font-weight:600;color:var(--rose)}
+.stage__loading svg{width:46px;height:46px;color:var(--pink);animation:beat 1.2s ease-in-out infinite}
+.stage__svg{position:absolute;inset:0;z-index:1;display:grid;place-items:center;padding:18px}
+.stage__svg svg{height:100%}
+.stage__err{position:absolute;z-index:2;left:12px;right:12px;bottom:12px;font-size:.78rem;text-align:center;color:var(--muted)}
+.stage__tools{position:absolute;z-index:3;top:12px;right:12px;display:flex;flex-direction:column;gap:8px}
+.stage__tools button{display:grid;place-items:center;width:42px;height:42px;border-radius:99px;background:rgba(255,255,255,.92);box-shadow:var(--shadow-sm);transition:transform .3s var(--spring),background .2s,color .2s}
+.stage__tools button:hover{transform:scale(1.1);color:var(--rose)}
+.stage__tools button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.stage__tools svg{width:19px;height:19px}
+.stage__hint{position:absolute;z-index:3;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.85);font-size:.74rem;font-weight:600;color:var(--ink-2);white-space:nowrap;pointer-events:none;transition:opacity .5s}
+.stage__hint svg{width:14px;height:14px;color:var(--pink)}
+.stage__hint.is-gone{opacity:0}
+.stage__price{position:absolute;z-index:3;top:12px;left:12px;padding:6px 12px;border-radius:99px;background:var(--ink);color:#fff;font-size:.74rem;font-weight:700}
+.designer__head .lead{margin:8px 0 18px;font-size:.98rem}
+.designer__head .h1{font-size:clamp(1.8rem,5vw,3rem)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;border-radius:999px;background:#fff;border:1px solid var(--line);margin-bottom:20px}
+.tab{display:flex;align-items:center;justify-content:center;gap:6px;min-height:42px;border-radius:999px;font-size:.86rem;font-weight:700;color:var(--muted);transition:background .3s,color .3s}
+.tab svg{width:16px;height:16px}
+.tab:hover{color:var(--rose)}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.tabpanel{animation:fadeUp .45s var(--ease)}
+.tabpanel[hidden]{display:none}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.type{position:relative;display:flex;flex-direction:column;padding:8px 8px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .35s var(--spring)}
+.type:hover{border-color:var(--blush-2);transform:translateY(-3px)}
+.type.is-selected{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.type:has(input:focus-visible){outline:2px solid var(--rose);outline-offset:2px}
+.type__img{aspect-ratio:1;border-radius:8px;overflow:hidden;margin-bottom:8px}
+.type__label{font-weight:700;font-size:.85rem;line-height:1.25}
+.type__text{font-size:.74rem;color:var(--muted);line-height:1.3;margin-top:2px}
+.type__check{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:24px;height:24px;border-radius:99px;background:var(--ink);color:#fff;animation:pop .35s var(--spring)}
+.type__check svg{width:14px;height:14px}
+.range{display:flex;align-items:center;gap:12px}
+.range input{flex:1;accent-color:var(--pink)}
+.range output{min-width:44px;text-align:right;font-size:.85rem;color:var(--muted)}
+.next-btn{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.9rem;color:var(--rose);margin:4px 0 6px;transition:gap .25s var(--ease)}
+.next-btn:hover{gap:10px}
+.next-btn svg{width:16px;height:16px}
+.designer__actions{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.designer__actions .btn--outline{min-height:50px}
+.hint{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);margin:0 0 18px}
+.hint svg{width:16px;height:16px;color:var(--pink);flex:none}
+@media (min-width:860px){
+  .designer__inner{grid-template-columns:1.05fr 1fr;gap:56px;padding-top:36px;padding-bottom:104px;align-items:start}
+  .stage-wrap{position:sticky;top:calc(var(--header-h) + 12px);margin:0;padding:0;background:none}
+  .stage{height:calc(100vh - var(--header-h) - 60px);max-height:720px;min-height:520px}
+}
+
+.cup-preview text{transition:fill .3s}
+</style>
+</head>
+<body>
+<button type="button" class="skip" data-action="skip">Skip to content</button>
+
+<div class="announce" role="region" aria-label="Announcements"><div class="marquee" style="--speed:38s"><div class="marquee__track" id="announceTrack"></div></div></div>
+
+<header class="header" id="header">
+  <div class="header__inner container">
+    <button type="button" class="icon-btn header__burger" data-action="menu" aria-label="Open menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <a href="#/" class="logo" id="logo"></a>
+    <nav class="header__nav" id="nav" aria-label="Main"></nav>
+    <div class="header__icons">
+      <button type="button" class="icon-btn" data-action="search" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <a class="icon-btn header__fav" href="#/shop?saved=1" id="favLink" aria-label="Saved items"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.6 2.1 4.5 6 4.1c2.3-.2 4.1 1 6 3.1 1.9-2.1 3.7-3.3 6-3.1 3.9.4 5.7 4.5 4 7.7C19.5 16.4 12 21 12 21z"/></svg><span id="favCount"></span></a>
+      <button type="button" class="icon-btn" data-action="cart" id="bagBtn" aria-label="Open bag"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 14H5L6 7Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg><span id="bagCount"></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="footer" id="contact"></footer>
+
+<!-- overlays -->
+<div class="overlay" id="menuOverlay" aria-hidden="true"><div class="menu" role="dialog" aria-modal="true" aria-label="Menu" id="menuPanel"></div></div>
+<div class="overlay overlay--search" id="searchOverlay" aria-hidden="true"><div class="search" role="dialog" aria-modal="true" aria-label="Search" id="searchPanel"></div></div>
+<div class="overlay" id="cartOverlay" aria-hidden="true"><aside class="drawer" role="dialog" aria-modal="true" aria-label="Your bag" id="cartPanel"></aside></div>
+<div class="overlay overlay--center" id="quickOverlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-label="Quick view" id="quickPanel"></div></div>
+
+<a class="wa-float" id="waFloat" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp"></a>
+<div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* =========================================================================
+   CONFIGURATION — edit here
+   ========================================================================= */
+const BRAND = {
+  name: 'Daily Paredes',                       // provisional — change here and it updates everywhere
+  tagline: 'Made with love. Designed just for you.',
+  shortDescription: 'Handmade personalized tumblers, glass mugs and custom gifts — designed around your name, your colors and your style.',
+  location: 'Grand Island, Nebraska',
+  // WhatsApp: international format, digits only (e.g. '13085551234'). PLACEHOLDER — replace with the real number.
+  whatsapp: '1XXXXXXXXXX',
+  // Set to true once real prices are confirmed (enables price filter, removes "sample price" notes).
+  pricesConfirmed: false,
+  announcements: ['Custom made with love', 'Personalized gifts for every occasion', "Have a special idea? Let's create it!", 'Now designing in 3D'],
+  social: { instagram: '', facebook: '', tiktok: '' },   // only real profiles; empty = hidden
+  email: '',
+  legal: { privacyUrl: '', termsUrl: '' },
+};
+
+const COPY = {
+  hero: { eyebrow: 'Personalized tumblers & glass cups, handmade to order', title: ['Your Cup.', 'Your Style.', 'Your Way.'],
+    text: 'Handcrafted personalized drinkware made to bring a little extra joy to every sip.', primary: 'Shop collection', secondary: 'Create your custom cup',
+    points: ['Your name, your colors', 'Handmade to order', 'Order easily on WhatsApp'] },
+  how: [
+    { t: 'Choose your cup', d: 'Pick a design you love or start from a blank tumbler, mug or kids cup.', i: 'cup' },
+    { t: 'Make it yours', d: 'Add a name, choose your colors and spin it in 3D until it feels just right.', i: 'wand' },
+    { t: 'Place your order', d: 'Send your order on WhatsApp with one tap. Every detail is in the message.', i: 'chat' },
+    { t: 'Made with love', d: 'We go over the details with you, then your cup is handmade just for you.', i: 'heart' },
+  ],
+  about: 'Every cup tells a story. We believe everyday moments deserve something special, which is why each personalized creation is made with care, creativity and attention to detail.',
+};
+
+const COLORS = [
+  { v: 'Blush Pink', hex: '#F4AFC4' }, { v: 'Hot Pink', hex: '#E04A86' }, { v: 'Lavender', hex: '#B8A5E6' },
+  { v: 'Aqua', hex: '#78D2CC' }, { v: 'Ocean Blue', hex: '#3F7BC8' }, { v: 'Sunshine', hex: '#F5CB45' },
+  { v: 'Mocha', hex: '#9C7458' }, { v: 'Midnight', hex: '#2D2B4E' }, { v: 'Pearl White', hex: '#F3EEE7' },
+];
+
+const CATEGORIES = [
+  { id: 'glitter-tumblers', name: 'Glitter Tumblers', desc: 'Skinny tumblers sealed with sparkle', img: 'ocean-1' },
+  { id: 'name-cups', name: 'Name Cups', desc: 'Your name, front and center', img: 'glam-name-1' },
+  { id: 'glass-mugs', name: 'Glass Mason Mugs', desc: 'Glass mugs with handles & fun lids', img: 'blue-floral-mug-1' },
+  { id: 'topper-cups', name: '3D Topper Cups', desc: 'Handmade toppers on top of your lid', img: 'bestie-topper' },
+  { id: 'kids-cups', name: 'Kids Cups', desc: 'Little cups for little sippers', img: 'kids-dome' },
+  { id: 'custom-gifts', name: 'Custom Gifts', desc: 'For birthdays, besties & dads', img: 'barber' },
+];
+
+const TF = ['Handmade to order', 'Stainless steel lid & straw', 'Glitter finish', 'Personalized with your name'];
+const MF = ['Handmade to order', 'Glass mug with handle', 'Decorated lid & straw', 'Personalized with your name'];
+const TOP_T = [...TF.slice(0, 3), 'Handmade 3D lid topper'];
+/* price: sample values until confirmed (null = price on request)
+   badges: 'favorite' = most-liked posts on the brand's Facebook page; 'new' = posted in the last weeks
+   popularity = post engagement (for sorting), added = post date */
+const PRODUCTS = [
+  { id: 'under-the-sea-tumbler', name: 'Under the Sea Tumbler', type: 'tumbler', cats: ['glitter-tumblers', 'name-cups'], price: 42, imgs: ['ocean-1', 'ocean-2'], alt: 'Aqua glitter tumbler with a jellyfish, an octopus and seashells', desc: 'Shimmering aqua glitter, dreamy sea friends and a coral reef wrapping all the way around. Add a name down the side to make it unmistakably yours.', feats: TF, badges: ['favorite', 'new'], pop: 60, added: '2026-10-20', color: 'Aqua' },
+  { id: 'pink-crush-tumbler', name: 'Pink Crush Topper Tumbler', type: 'tumbler', cats: ['glitter-tumblers', 'topper-cups'], price: 45, imgs: ['pink-crush-1', 'pink-crush-2'], alt: 'Hot pink tumbler with hearts and a pink character topper on the lid', desc: 'All the pink, all the hearts. A lavender glitter base, bold pink artwork and a handmade 3D topper sitting on the lid.', feats: TOP_T, badges: ['favorite', 'new'], pop: 23, added: '2026-10-20', color: 'Hot Pink' },
+  { id: 'content-creator-tumbler', name: 'Content Creator Glam Tumbler', type: 'tumbler', cats: ['name-cups', 'custom-gifts'], price: 42, imgs: ['creator-glam'], alt: 'Pink glitter tumbler with an illustrated girl holding a phone and a name below', desc: 'For the girl who’s always creating. A glam illustrated portrait over pink sparkle, finished with her name in big script letters.', feats: TF, badges: ['new'], pop: 21, added: '2026-10-22', color: 'Blush Pink' },
+  { id: 'glam-girl-name-tumbler', name: 'Glam Girl Name Tumbler', type: 'tumbler', cats: ['name-cups', 'glitter-tumblers'], price: 42, imgs: ['glam-name-1', 'glam-name-2'], alt: 'Pink glitter tumbler with the name Natalia and an illustrated girl', desc: 'Pretty in pink with a bold name across the top and a stylish illustrated girl, all over a sparkly glitter base.', feats: TF, pop: 18, added: '2026-10-11', color: 'Hot Pink' },
+  { id: 'mocha-leopard-tumbler', name: 'Mocha Leopard Bow Tumbler', type: 'tumbler', cats: ['glitter-tumblers'], price: 40, imgs: ['mocha-leopard'], alt: 'Brown glitter tumbler with a leopard print bow', desc: 'Warm mocha glitter with a chic leopard bow — neutral, cozy and made for your everyday iced coffee.', feats: TF, badges: ['favorite'], pop: 37, added: '2026-10-08', color: 'Mocha' },
+  { id: 'bestie-topper-tumbler', name: 'Bestie Name Topper Tumbler', type: 'tumbler', cats: ['topper-cups', 'name-cups'], price: 45, imgs: ['bestie-topper'], alt: 'Pink and blue tumbler with the name Suny and a 3D topper on the lid', desc: 'A sweet blue-and-pink design with a name in pink script and a handmade 3D topper on the lid. Perfect for matching besties.', feats: [...TF.slice(0, 2), 'Handmade 3D lid topper', 'Personalized with your name'], pop: 20, added: '2026-10-07', color: 'Ocean Blue' },
+  { id: 'barber-tumbler', name: 'Barber Shop Tumbler', type: 'tumbler', cats: ['custom-gifts', 'glitter-tumblers'], price: 40, imgs: ['barber'], alt: 'Blue tumbler decorated with barber tools, clippers and a barber pole', desc: 'Clippers, combs and a classic barber pole on deep blue shimmer. A one-of-a-kind gift for the barber in your life — add his name or shop name.', feats: TF, badges: ['favorite'], pop: 29, added: '2026-10-07', color: 'Ocean Blue' },
+  { id: 'sweet-baker-tumbler', name: 'Sweet Baker Tumbler', type: 'tumbler', cats: ['name-cups', 'custom-gifts'], price: 42, imgs: ['sweet-baker'], alt: 'Pink tumbler with an illustrated baker girl holding a cake', desc: 'A sugar-sweet design for the baker, the cake artist or the girl who just loves dessert. Pink sparkle with an illustrated baker.', feats: TF, pop: 19, added: '2026-09-26', color: 'Blush Pink' },
+  { id: 'coffee-girl-tumbler', name: 'Coffee Girl Name Tumbler', type: 'tumbler', cats: ['name-cups'], price: 42, imgs: ['coffee-girl'], alt: 'Purple and pink tumbler with an illustrated girl holding an iced coffee and a name', desc: 'Iced coffee era, made official. An illustrated coffee girl with her name in bold pink lettering.', feats: TF, pop: 14, added: '2026-09-25', color: 'Lavender' },
+  { id: 'galaxy-friends-tumbler', name: 'Galaxy Friends Topper Tumbler', type: 'tumbler', cats: ['topper-cups', 'glitter-tumblers'], price: 45, imgs: ['galaxy-topper-1', 'galaxy-topper-2'], alt: 'Deep blue glitter tumbler with a cute character and a 3D topper', desc: 'Deep galaxy blue glitter, an adorable character and a handmade 3D topper on the lid. Each one is made in your favorite colors.', feats: TOP_T, pop: 14, added: '2026-09-25', color: 'Midnight' },
+  { id: 'purple-kawaii-tumbler', name: 'Purple Kawaii Tumbler', type: 'tumbler', cats: ['glitter-tumblers', 'custom-gifts'], price: 40, imgs: ['purple-kawaii'], alt: 'Purple glitter tumbler with cute kawaii bears', desc: 'Lavender sparkle and the cutest little bears. Soft, sweet and made for someone who loves all things kawaii.', feats: TF, pop: 15, added: '2026-09-20', color: 'Lavender' },
+  { id: 'vanilla-cupcake-tumbler', name: 'Vanilla Cupcake Tumbler', type: 'tumbler', cats: ['glitter-tumblers', 'custom-gifts'], price: 40, imgs: ['vanilla-cupcake'], alt: 'Cream and gold glitter tumbler with cupcakes and a pink bow', desc: 'Creamy vanilla tones, gold flakes and tiny cupcakes. Soft, elegant and very gift-worthy.', feats: TF, pop: 18, added: '2026-09-19', color: 'Pearl White' },
+  { id: 'ice-princess-tumbler', name: 'Ice Princess Topper Tumbler', type: 'tumbler', cats: ['topper-cups', 'glitter-tumblers'], price: 45, imgs: ['ice-princess'], alt: 'Icy blue glitter tumbler with snowflakes and a princess topper', desc: 'Frosty blue shimmer, sparkling snowflakes and a princess topper on the lid. A little magic for every sip.', feats: TOP_T, badges: ['favorite'], pop: 28, added: '2026-08-31', color: 'Ocean Blue' },
+  { id: 'golden-apple-tumbler', name: 'Golden Apple Princess Tumbler', type: 'tumbler', cats: ['glitter-tumblers'], price: 40, imgs: ['golden-apple'], alt: 'Yellow glitter tumbler with a red bow and a classic princess portrait', desc: 'Sunny yellow glitter, a red bow and a classic fairytale portrait. Bright, cheerful and totally timeless.', feats: TF, badges: ['favorite'], pop: 30, added: '2026-08-19', color: 'Sunshine' },
+  { id: 'blue-floral-mason-mug', name: 'Blue Floral Topper Mason Mug', type: 'mug', cats: ['glass-mugs', 'topper-cups', 'custom-gifts'], price: 40, imgs: ['blue-floral-mug-1', 'blue-floral-mug-2'], alt: 'Glass mason mug filled with blue glitter and flowers, with a 3D topper lid', desc: 'A glass mason mug swirling with blue glitter and florals, topped with a handmade 3D topper. Order two for a matching set.', feats: [...MF.slice(0, 2), 'Handmade 3D topper lid', 'Personalized with your name'], badges: ['favorite'], pop: 34, added: '2026-08-31', color: 'Ocean Blue' },
+  { id: 'tropical-floral-mug', name: 'Tropical Floral Glass Mug', type: 'mug', cats: ['glass-mugs', 'topper-cups'], price: 40, imgs: ['tropical-mug'], alt: 'Purple glitter glass mug with tropical flowers, crystal lid and a topper', desc: 'Island florals, butterflies and purple sparkle, finished with a crystal-covered lid and a handmade topper.', feats: [...MF.slice(0, 2), 'Crystal lid with topper', 'Personalized with your name'], pop: 19, added: '2026-10-14', color: 'Lavender' },
+  { id: 'midnight-crystal-jar', name: 'Midnight Crystal Glass Jar', type: 'mug', cats: ['glass-mugs'], price: 38, imgs: ['midnight-jar'], alt: 'Dark blue glass jar with a character design and a green crystal lid', desc: 'Moody midnight tones with a storybook character and a lid covered in green crystals. Spooky-cute, all year long.', feats: ['Handmade to order', 'Glass jar', 'Crystal-covered lid', 'Personalized with your name'], pop: 15, added: '2026-10-14', color: 'Midnight' },
+  { id: 'pink-boba-glass-cup', name: 'Pink Crystal Glass Cup', type: 'mug', cats: ['glass-mugs'], price: 38, imgs: ['pink-boba'], alt: 'Pink glass cup with a crystal-covered lid and a pink straw', desc: 'Hot pink everything — a pink glass cup, a lid packed with crystals and a matching straw. Made for your boba runs.', feats: ['Handmade to order', 'Glass cup', 'Crystal-covered lid', 'Personalized with your name'], pop: 22, added: '2026-10-03', color: 'Hot Pink' },
+  { id: 'honey-name-mason-mug', name: 'Honey Name Mason Mug', type: 'mug', cats: ['glass-mugs', 'name-cups', 'topper-cups'], price: 40, imgs: ['honey-name-mug'], alt: 'Golden glass mason mug with the name Ana and a topper on the lid', desc: 'Golden honey glitter, a sweet storybook bear and a name written down the side. A cozy, personal gift for any age.', feats: [...MF.slice(0, 2), 'Handmade lid topper', 'Personalized with your name'], pop: 9, added: '2026-08-25', color: 'Sunshine' },
+  { id: 'sunny-mason-mug', name: 'Sunny Yellow Mason Mug', type: 'mug', cats: ['glass-mugs', 'kids-cups', 'topper-cups'], price: 38, imgs: ['sunny-mug'], alt: 'Blue and yellow glass mason mug with a cartoon character and a yellow topper', desc: 'Bright, playful and full of sunshine. A glass mason mug with a fun cartoon theme and a yellow topper on the lid.', feats: [...MF.slice(0, 2), 'Handmade lid topper', 'Personalized with your name'], pop: 21, added: '2026-09-25', color: 'Sunshine' },
+  { id: 'kids-dome-cup', name: 'Kids Dome Lid Cup', type: 'kids', cats: ['kids-cups', 'topper-cups'], price: 30, imgs: ['kids-dome'], alt: 'Blue kids cup with a dome lid, cartoon characters and a straw topper', desc: 'A fun dome-lid cup for little ones, with their favorite characters, a straw and a cute straw topper. Add their name so it never gets mixed up.', feats: ['Handmade to order', 'Dome lid & straw', 'Straw topper', 'Personalized with their name'], pop: 20, added: '2026-10-15', color: 'Ocean Blue' },
+];
+
+/* Add REAL reviews here (with permission). The section stays hidden while empty. */
+const REVIEWS = [];
+
+/* Personalization options for ready-made designs */
+const AS_PICTURED = 'As pictured';
+const OPT = {
+  name: { kind: 'text', label: 'Name or text', ph: 'e.g. Emma', max: 18, help: 'Leave blank if you don’t want a name.' },
+  font: { kind: 'choice', label: 'Name style', choices: ['Script', 'Bubble', 'Classic'] },
+  color: { kind: 'swatch', label: 'Main color' },
+  decoration: { kind: 'choice', label: 'Decoration', choices: ['Glitter', 'Florals', 'Hearts', '3D topper'] },
+  lid: { kind: 'choice', label: 'Lid', choices: ['Crystal lid', '3D topper lid', 'Classic lid'] },
+  notes: { kind: 'textarea', label: 'Special notes', ph: 'Theme, favorite character, gift occasion…', max: 300 },
+};
+const OPTS_BY_TYPE = { tumbler: ['name', 'font', 'color', 'decoration', 'notes'], mug: ['name', 'font', 'color', 'lid', 'notes'], kids: ['name', 'color', 'notes'] };
+const ORDER_LABEL = { name: 'Name customization', font: 'Name style', color: 'Color', decoration: 'Decoration', lid: 'Lid', notes: 'Additional notes' };
+const FONT_FAMILY = { Script: "'Pacifico',cursive", Bubble: "'Fredoka','DM Sans',sans-serif", Classic: "'Fraunces',Georgia,serif" };
+
+/* 3D designer options */
+const CUP_TYPES = [
+  { v: 'tumbler', label: 'Skinny Tumbler', text: 'Glitter tumbler with lid & straw', img: 'glam-name-1' },
+  { v: 'mug', label: 'Glass Mason Mug', text: 'Glass mug with handle & lid', img: 'honey-name-mug' },
+  { v: 'kids', label: 'Kids Cup', text: 'Dome lid cup with straw', img: 'kids-dome' },
+];
+const LIDS = [{ v: 'Silver', hex: '#d9dadf', metal: 1 }, { v: 'Gold', hex: '#e4c27a', metal: 1 }, { v: 'Rose Gold', hex: '#e9b3a0', metal: 1 }, { v: 'Pink', hex: '#f4afc4' }, { v: 'White', hex: '#f7f4f0' }, { v: 'Black', hex: '#2b2b30' }];
+const STRAWS = [{ v: 'Pink', hex: '#f4afc4' }, { v: 'Hot Pink', hex: '#e04a86' }, { v: 'Lavender', hex: '#b8a5e6' }, { v: 'Aqua', hex: '#78d2cc' }, { v: 'Clear', hex: '#e6f1f5' }, { v: 'Silver', hex: '#c9cbd1' }];
+const TEXT_COLORS = [{ v: 'White', hex: '#ffffff' }, { v: 'Hot Pink', hex: '#e04a86' }, { v: 'Gold', hex: '#d4a93c' }, { v: 'Black', hex: '#2b2326' }, { v: 'Lavender', hex: '#8f74dc' }, { v: 'Aqua', hex: '#2fb3a8' }];
+const TOPPERS = ['None', 'Heart', 'Star', 'Bow', 'Flower'];
+const GLITTER = ['None', 'Fine', 'Sparkly', 'Extra'];
+const DECOS = ['Hearts', 'Stars', 'Flowers', 'Butterflies'];
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+const fmt = (n) => money.format(n);
+const src = (n, sm) => `images/${n}${sm ? '-sm' : ''}.webp`;
+const pic = (n, alt = '', o = {}) => `<img class="img ${o.cls || ''}" src="${src(n)}" srcset="${src(n, 1)} 420w, ${src(n)} 720w" sizes="${o.sizes || '(max-width:640px) 50vw, 25vw'}" alt="${esc(alt)}" width="720" height="900" loading="${o.eager ? 'eager' : 'lazy'}" decoding="async"${o.eager ? ' fetchpriority="high"' : ''}>`;
+const productById = (id) => PRODUCTS.find((p) => p.id === id);
+const catById = (id) => CATEGORIES.find((c) => c.id === id);
+const colorHex = (v) => (COLORS.find((c) => c.v === v) || COLORS[0]).hex;
+const findHex = (list, v) => (list.find((c) => c.v === v) || list[0]).hex;
+const priceText = (p) => (p === null ? 'Price on request' : fmt(p));
+const reduceOS = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const f = (c) => Math.max(0, Math.min(255, Math.round(c + (amt > 0 ? (255 - c) * amt : c * amt))));
+  return '#' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => f(c).toString(16).padStart(2, '0')).join('');
+}
+const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
+function seeded(seed) { return () => ((seed = (seed * 16807) % 2147483647) / 2147483647); }
+function load(k, f) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : f; } catch { return f; } }
+function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode: keep in memory */ } }
+
+/* Icons (inline SVG) */
+const HEART_PATH = 'M12 21s-7.5-4.6-10-9.2C.3 8.6 2.1 4.5 6 4.1c2.3-.2 4.1 1 6 3.1 1.9-2.1 3.7-3.3 6-3.1 3.9.4 5.7 4.5 4 7.7C19.5 16.4 12 21 12 21z';
+const ic = {
+  heart: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${HEART_PATH}"/></svg>`,
+  heartO: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${HEART_PATH}"/></svg>`,
+  spark: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c.6 5.6 2.4 7.4 8 8-5.6.6-7.4 2.4-8 8-.6-5.6-2.4-7.4-8-8 5.6-.6 7.4-2.4 8-8Z"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.48.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.04 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.4 9.4 0 0 1-1.44-5.02c0-5.2 4.24-9.44 9.45-9.44 2.52 0 4.89.99 6.67 2.77a9.37 9.37 0 0 1 2.76 6.68c0 5.2-4.24 9.43-9.45 9.43m8.04-17.47A11.3 11.3 0 0 0 12.04.7C5.77.7.67 5.8.67 12.06c0 2 .52 3.96 1.52 5.68L.57 23.3l5.7-1.5a11.33 11.33 0 0 0 5.77 1.47h.01c6.26 0 11.36-5.1 11.37-11.36 0-3.04-1.18-5.89-3.34-8.04"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>',
+  x: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  bag: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1 14H5L6 7Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>',
+  arrow: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  cube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg>',
+  rotate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>',
+  reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>',
+  hand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V11M16 11V8a1.5 1.5 0 0 1 3 0v6a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3 14a1.6 1.6 0 0 1 2.5-2L7 13.5"/></svg>',
+  cup: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10l-1 14H8L7 7ZM6 4h12v3H6zM14 4l1-3"/></svg>',
+  palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 3-3.5 3H16a2 2 0 0 0-1.4 3.4A2 2 0 0 1 12 22Z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16.5" cy="10.5" r="1"/></svg>',
+  type: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>',
+  wand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 4 1-2 1 2 2 1-2 1-1 2-1-2-2-1 2-1ZM3 21 14 10M18 13l.7 1.3L20 15l-1.3.7L18 17l-.7-1.3L16 15l1.3-.7L18 13Z"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>',
+};
+const heartFill = (cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${HEART_PATH}"/></svg>`;
+
+/* =========================================================================
+   STATE (cart + favorites, persisted)
+   ========================================================================= */
+const S = { cart: load('dp-cart', []), favs: load('dp-favs', []), notes: '', motion: load('dp-motion', 'on') };
+const saveCart = () => { save('dp-cart', S.cart); updateBadges(); };
+const lineKey = (it) => `${it.productId}|${it.options.map((o) => o.label + '=' + o.value).join('|')}|${it.custom ? it.image.length : ''}`;
+function addToCart(item, fromEl) {
+  const key = lineKey(item);
+  const ex = S.cart.find((i) => i.key === key);
+  if (ex) ex.qty = Math.min(99, ex.qty + item.qty); else S.cart.push({ ...item, key });
+  saveCart();
+  if (fromEl) flyToBag(fromEl, item.image);
+  showToast(item.name, item.image);
+  const bag = $('#bagBtn'); bag.classList.remove('wiggle'); void bag.offsetWidth; bag.classList.add('wiggle');
+}
+function toggleFav(id, el) {
+  const on = !S.favs.includes(id);
+  S.favs = on ? [...S.favs, id] : S.favs.filter((f) => f !== id);
+  save('dp-favs', S.favs); updateBadges();
+  $$(`[data-fav="${id}"]`).forEach((b) => { b.classList.toggle('is-saved', on); b.setAttribute('aria-pressed', on); });
+  if (on && el) { const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2); }
+}
+function updateBadges() {
+  const n = S.cart.reduce((s, i) => s + i.qty, 0);
+  $('#bagCount').innerHTML = n ? `<span class="dot-count">${n}</span>` : '';
+  $('#bagBtn').setAttribute('aria-label', `Open bag, ${n} items`);
+  $('#favCount').innerHTML = S.favs.length ? `<span class="dot-count">${S.favs.length}</span>` : '';
+}
+
+/* =========================================================================
+   WHATSAPP
+   ========================================================================= */
+const WA_DIGITS = BRAND.whatsapp.replace(/\D/g, '');
+const WA_OK = WA_DIGITS.length >= 10 && !/x/i.test(BRAND.whatsapp);
+// Without a real number, WhatsApp opens with the message ready and the customer picks the chat.
+const waUrl = (msg) => `https://wa.me/${WA_OK ? WA_DIGITS : ''}?text=${encodeURIComponent(msg)}`;
+const priceLine = (p, each) => p === null ? 'Price: quote needed' : `Price: ${fmt(p)}${each ? ' each' : ''}${BRAND.pricesConfirmed ? '' : ' (listed price, please confirm)'}`;
+const optLines = (opts, ind = '') => opts.filter((o) => String(o.value).trim()).map((o) => `${ind}${o.label}: ${String(o.value).trim()}`);
+const CLOSING = ['Could you please let me know the next steps to complete my order?', '', 'Thank you!'];
+function singleMsg(l) {
+  return ["Hi! I'd love to order this custom cup.", '', `Product: ${l.name}`, priceLine(l.price), `Quantity: ${l.qty}`, ...optLines(l.options), ...(l.custom ? ['', '(I can send you my 3D design picture here in the chat.)'] : []), '', ...CLOSING].join('\n');
+}
+function orderMsg(lines, notes = '') {
+  if (lines.length === 1 && !notes.trim()) return singleMsg(lines[0]);
+  const priced = lines.filter((l) => l.price !== null), quoted = lines.length - priced.length;
+  const sub = priced.reduce((s, l) => s + l.price * l.qty, 0), items = lines.reduce((s, l) => s + l.qty, 0);
+  const body = lines.flatMap((l, i) => [`${i + 1}. ${l.name} — Qty: ${l.qty}`, `   ${priceLine(l.price, l.qty > 1)}`, ...optLines(l.options, '   '), '']);
+  const totals = [`Items: ${items}`, priced.length ? `Subtotal: ${fmt(sub)}${quoted ? ` + ${quoted} custom item${quoted > 1 ? 's' : ''} to quote` : ''}${BRAND.pricesConfirmed ? '' : ' (based on listed prices)'}` : 'Subtotal: to be quoted'];
+  return ["Hi! I'd love to place this order:", '', ...body, ...totals, ...(notes.trim() ? ['', `Order notes: ${notes.trim()}`] : []), '', ...CLOSING].join('\n');
+}
+const generalMsg = () => `Hi ${BRAND.name}! I have an idea for a custom cup and would love your help. 💕`;
+
+/* =========================================================================
+   EFFECTS — hearts, bursts, fly-to-bag, reveal, tilt, sparkle trail
+   ========================================================================= */
+const HEART_COLORS = ['#ff8fb8', '#f9cfdc', '#e8478b', '#ffffff', '#c9b8f0', '#ffb3cd'];
+function heartsLayer(count, light) {
+  const n = innerWidth < 640 ? Math.ceil(count * 0.55) : count;
+  let h = '';
+  for (let i = 0; i < n; i++) {
+    const s = 10 + Math.random() * 26;
+    h += `<span class="heart-f" style="--x:${Math.random() * 100}%;--s:${s}px;--c:${light ? (Math.random() < .5 ? '#fff' : '#ffd1e1') : HEART_COLORS[i % HEART_COLORS.length]};--d:${9 + Math.random() * 10}s;--delay:${-Math.random() * 18}s;--r:${-30 + Math.random() * 60}deg;--o:${.35 + Math.random() * .5}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="${HEART_PATH}"/></svg></span>`;
+  }
+  return `<div class="hearts" aria-hidden="true">${h}</div>`;
+}
+function sizeHearts() { $$('.hearts').forEach((l) => l.style.setProperty('--h', l.offsetHeight + 100 + 'px')); }
+function sparkles(n, color = '#fff') {
+  let h = '';
+  for (let i = 0; i < n; i++) h += `<span class="sparkle" style="left:${5 + Math.random() * 90}%;top:${5 + Math.random() * 90}%;--s:${8 + Math.random() * 14}px;--d:${1.8 + Math.random() * 2}s;--delay:${-Math.random() * 3}s;--c:${color}">${ic.spark}</span>`;
+  return h;
+}
+function burst(x, y, n = 12) {
+  if (S.motion === 'off') return;
+  for (let i = 0; i < n; i++) {
+    const el = document.createElement('span');
+    el.className = 'burst-heart';
+    el.innerHTML = ic.heart;
+    el.style.left = x - 9 + 'px'; el.style.top = y - 9 + 'px';
+    el.style.color = HEART_COLORS[i % 4 === 3 ? 0 : i % 3];
+    document.body.appendChild(el);
+    const a = (Math.PI * 2 * i) / n + Math.random() * .5, d = 40 + Math.random() * 50;
+    el.animate([{ transform: 'translate(0,0) scale(.3)', opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d - 20}px) scale(${.6 + Math.random() * .8}) rotate(${Math.random() * 60 - 30}deg)`, opacity: 0 }], { duration: 700 + Math.random() * 300, easing: 'cubic-bezier(.22,.61,.36,1)' }).onfinish = () => el.remove();
+  }
+}
+function flyToBag(fromEl, image) {
+  if (S.motion === 'off') return;
+  const r = fromEl.getBoundingClientRect(), b = $('#bagBtn').getBoundingClientRect();
+  const img = document.createElement('img');
+  img.className = 'fly'; img.src = image.startsWith('data:') ? image : src(image, 1); img.alt = '';
+  Object.assign(img.style, { left: r.left + r.width / 2 - 40 + 'px', top: r.top - 60 + 'px', width: '80px', height: '100px' });
+  document.body.appendChild(img);
+  img.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${b.left - r.left - r.width / 2 + 40 - 18}px,${b.top - r.top + 60 - 30}px) scale(.15) rotate(20deg)`, opacity: .4 }], { duration: 800, easing: 'cubic-bezier(.55,-0.2,.4,1)' }).onfinish = () => { img.remove(); burst(b.left + b.width / 2, b.top + b.height / 2, 8); };
+}
+let revealIO;
+function initReveal(root) {
+  revealIO?.disconnect();
+  revealIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); } }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+  $$('[data-reveal]', root).forEach((el) => revealIO.observe(el));
+}
+function onTilt(e) {
+  const m = e.target.closest('.card__media');
+  if (!m || e.pointerType !== 'mouse' || S.motion === 'off') return;
+  const r = m.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+  m.style.setProperty('--ry', (x - .5) * 10 + 'deg'); m.style.setProperty('--rx', (.5 - y) * 10 + 'deg');
+  m.style.setProperty('--mx', x * 100 + '%'); m.style.setProperty('--my', y * 100 + '%');
+}
+function offTilt(e) { const m = e.target.closest?.('.card__media'); if (m && !m.contains(e.relatedTarget)) { m.style.setProperty('--rx', '0deg'); m.style.setProperty('--ry', '0deg'); } }
+let lastTrail = 0;
+function trail(e) {
+  if (e.pointerType !== 'mouse' || S.motion === 'off' || performance.now() - lastTrail < 45) return;
+  lastTrail = performance.now();
+  const el = document.createElement('span');
+  el.className = 'trail'; el.innerHTML = Math.random() < .5 ? ic.heart : ic.spark;
+  el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px'; el.style.color = HEART_COLORS[Math.floor(Math.random() * 3)];
+  document.body.appendChild(el); setTimeout(() => el.remove(), 900);
+}
+
+/* =========================================================================
+   SHARED MARKUP
+   ========================================================================= */
+const qtyHTML = (v, label, sm, scope = '') => `<div class="qty ${sm ? 'qty--sm' : ''}" role="group" aria-label="${esc(label)}"><button type="button" data-action="qty-dec" ${scope} ${v <= 1 ? 'disabled' : ''} aria-label="Decrease quantity">${ic.minus}</button><output aria-live="polite">${v}</output><button type="button" data-action="qty-inc" ${scope} aria-label="Increase quantity">${ic.plus}</button></div>`;
+const badgeHTML = { favorite: `<span class="badge">${ic.heart} Fan favorite</span>`, new: '<span class="badge badge--new">New</span>' };
+function cardHTML(p, i = 0, eager) {
+  const saved = S.favs.includes(p.id), cat = catById(p.cats[0]);
+  return `<article class="card" data-reveal style="--i:${i % 4}">
+    <div class="card__media">
+      <a href="#/product/${p.id}" class="card__link" aria-label="${esc(p.name)}">${pic(p.imgs[0], p.alt, { eager, sizes: '(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw' })}${p.imgs[1] ? pic(p.imgs[1], '', { cls: 'card__alt' }) : ''}</a>
+      <span class="card__shine"></span>
+      ${p.badges?.length ? `<div class="card__badges">${p.badges.map((b) => badgeHTML[b]).join('')}</div>` : ''}
+      <button type="button" class="card__fav ${saved ? 'is-saved' : ''}" data-action="fav" data-fav="${p.id}" aria-pressed="${saved}" aria-label="Save ${esc(p.name)}">${ic.heartO}</button>
+      <button type="button" class="card__quick" data-action="quick" data-id="${p.id}">${ic.eye} Quick view</button>
+    </div>
+    <a href="#/product/${p.id}" class="card__body">${cat ? `<span class="card__cat">${cat.name}</span>` : ''}<h3 class="card__name">${esc(p.name)}</h3><span class="card__price">${priceText(p.price)}</span>${p.availability ? `<span class="card__avail">${esc(p.availability)}</span>` : ''}</a>
+  </article>`;
+}
+const waveSVG = (color, flip) => `<svg class="wave ${flip ? 'wave--flip' : ''}" viewBox="0 0 1440 46" preserveAspectRatio="none" aria-hidden="true"><path fill="${color}" d="M0 46V22c120-18 240-18 360 0s240 18 360 0 240-18 360 0 240 18 360 0v24Z"/></svg>`;
+const sectionHead = (eyebrow, title, text, center) => `<div class="section-head ${center ? 'section-head--center' : ''}" data-reveal><p class="eyebrow">${eyebrow}</p><h2 class="h2">${title}</h2>${text ? `<p class="section-head__text">${text}</p>` : ''}</div>`;
+
+/* 2D cup illustration (home teaser + fallback if 3D can't load) */
+function cupSVG({ type = 'tumbler', hex = '#F4AFC4', name = '', font = 'Script', deco = 'Glitter', caret = false }) {
+  const shapes = { tumbler: { body: 'M62 70 H138 L134 292 Q134 300 126 300 H74 Q66 300 66 292 Z', box: [62, 70, 76, 230], ty: 185, v: true }, mug: { body: 'M48 92 Q48 84 56 84 H136 Q144 84 144 92 V284 Q144 300 128 300 H64 Q48 300 48 284 Z', box: [48, 84, 96, 216], ty: 196 }, kids: { body: 'M54 120 H146 L138 290 Q137 300 127 300 H73 Q63 300 62 290 Z', box: [54, 120, 92, 180], ty: 214 } };
+  const sh = shapes[type], light = lum(hex) > .62, label = name.trim() || 'Your Name', len = label.length;
+  const fs = sh.v ? Math.min(40, (210 / Math.max(len, 3)) * 1.35) : Math.min(34, (160 / Math.max(len, 3)) * 1.25);
+  const r = seeded(7); let dots = '';
+  for (let i = 0; i < 60; i++) dots += `<circle cx="${sh.box[0] + r() * sh.box[2]}" cy="${sh.box[1] + r() * sh.box[3]}" r="${.6 + r() * 1.8}" fill="#fff" opacity="${(.35 + r() * .6) * (deco === 'Glitter' ? 1 : .6)}"/>`;
+  return `<svg viewBox="0 0 200 330" class="cup-preview" role="img" aria-label="Preview of a ${esc(type)} with ${esc(label)}">
+  <defs><linearGradient id="cf-${type}" x1="0" x2="1"><stop offset="0" stop-color="${shade(hex, -.18)}"/><stop offset=".45" stop-color="${shade(hex, .12)}"/><stop offset="1" stop-color="${shade(hex, -.25)}"/></linearGradient>
+  <linearGradient id="cs-${type}" x1="0" x2="1"><stop offset="0" stop-color="#9a9a9e"/><stop offset=".35" stop-color="#f4f4f6"/><stop offset=".7" stop-color="#b9b9be"/><stop offset="1" stop-color="#8a8a90"/></linearGradient>
+  <clipPath id="cc-${type}"><path d="${sh.body}"/></clipPath></defs>
+  <ellipse cx="100" cy="312" rx="62" ry="7" fill="#c42d63" opacity=".1"/>
+  ${type === 'mug' ? `<path d="M144 130 Q182 130 182 186 Q182 244 144 246" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="13" stroke-linecap="round"/>` : ''}
+  <path d="${sh.body}" fill="url(#cf-${type})"/>
+  <g clip-path="url(#cc-${type})">${dots}<rect x="${sh.box[0] + 10}" y="${sh.box[1]}" width="9" height="${sh.box[3]}" fill="#fff" opacity=".28"/></g>
+  <text x="100" y="${sh.ty}" text-anchor="middle" dominant-baseline="middle" fill="${light ? '#B02A57' : '#fff'}" stroke="${light ? '#fff' : 'rgba(0,0,0,.18)'}" stroke-width="${light ? 3 : 1}" paint-order="stroke" font-family="${FONT_FAMILY[font]}" font-size="${fs}" ${font === 'Classic' ? 'font-style="italic" font-weight="600"' : ''} ${sh.v ? `transform="rotate(-90 100 ${sh.ty})"` : ''} opacity="${name.trim() ? 1 : .55}">${esc(label)}${caret ? '|' : ''}</text>
+  ${type === 'tumbler' ? `<rect x="112" y="6" width="6" height="64" rx="3" fill="url(#cs-${type})" transform="rotate(6 115 40)"/><rect x="58" y="46" width="84" height="28" rx="5" fill="url(#cs-${type})"/>` : ''}
+  ${type === 'mug' ? `<rect x="116" y="20" width="7" height="70" rx="3.5" fill="${shade(hex, -.05)}" transform="rotate(8 120 50)"/><rect x="44" y="66" width="104" height="24" rx="8" fill="${shade(hex, .35)}" stroke="#fff" stroke-width="2"/>` : ''}
+  ${type === 'kids' ? `<rect x="114" y="10" width="7" height="80" rx="3.5" fill="${shade(hex, -.1)}"/><path d="M50 122 Q100 54 150 122 Z" fill="#fff" opacity=".75"/><rect x="48" y="116" width="104" height="10" rx="5" fill="${shade(hex, .25)}"/>` : ''}
+  </svg>`;
+}
+
+/* =========================================================================
+   CHROME — header nav, footer, menu, search, cart, quick view, toast
+   ========================================================================= */
+const NAV = [
+  { label: 'Shop All', to: '#/shop', match: '/shop' },
+  { label: 'Customer Favorites', to: '#/shop?fav=1&sort=popular' },
+  { label: 'Design in 3D', to: '#/custom', match: '/custom', cls: 'nav-3d', extra: '<span>NEW</span>' },
+  { label: 'About Us', to: '#/?s=about' },
+  { label: 'Contact', to: '#/?s=contact' },
+];
+function renderChrome() {
+  $('#announceTrack').innerHTML = [0, 1].map(() => `<span>${BRAND.announcements.map((a) => `${esc(a)} ${ic.heart}`).join(' ')}</span>`).join('');
+  const logo = `${heartFill()} ${esc(BRAND.name)}`;
+  $('#logo').innerHTML = logo; $('#logo').setAttribute('aria-label', `${BRAND.name} — home`);
+  $('#nav').innerHTML = NAV.map((l) => `<a href="${l.to}" class="${l.cls || ''}" data-match="${l.match || ''}">${l.label}${l.extra || ''}</a>`).join('');
+  const wa = waUrl(generalMsg());
+  const waF = $('#waFloat'); waF.href = wa; waF.innerHTML = `${ic.wa.replace('width="20" height="20"', 'width="26" height="26"')}<span class="wa-float__label">Questions? Chat with us</span>`;
+  const socials = Object.entries(BRAND.social).filter(([, u]) => u);
+  const legal = [['Privacy Policy', BRAND.legal.privacyUrl], ['Terms', BRAND.legal.termsUrl]].filter(([, u]) => u);
+  $('#contact').innerHTML = `
+    <div class="container footer__grid">
+      <div class="footer__brand"><a href="#/" class="logo">${logo}</a><p>${esc(BRAND.shortDescription)}</p><p class="footer__loc">${ic.pin} Handmade in ${esc(BRAND.location)}</p></div>
+      <nav aria-label="Shop"><h3>Shop</h3><a href="#/shop">Shop All</a>${CATEGORIES.slice(0, 5).map((c) => `<a href="#/shop?cat=${c.id}">${c.name}</a>`).join('')}</nav>
+      <nav aria-label="Orders"><h3>Orders</h3><a href="#/custom">Design in 3D</a><a href="#/?s=how">How it works</a><a href="#/?s=about">About Us</a>${legal.map(([l, u]) => `<a href="${esc(u)}">${l}</a>`).join('')}</nav>
+      <div><h3>Contact</h3><p class="footer__text">Questions, ideas or custom orders — we’d love to hear from you.</p>
+        <a class="btn btn--whatsapp" href="${wa}" target="_blank" rel="noopener noreferrer">${ic.wa} Message us on WhatsApp</a>
+        ${BRAND.email ? `<p style="margin-top:14px"><a href="mailto:${esc(BRAND.email)}">${esc(BRAND.email)}</a></p>` : ''}
+        ${socials.length ? `<p style="margin-top:14px;display:flex;gap:16px">${socials.map(([n, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${n[0].toUpperCase() + n.slice(1)}</a>`).join('')}</p>` : ''}
+      </div>
+    </div>
+    <div class="container footer__bottom"><p>© ${new Date().getFullYear()} ${esc(BRAND.name)}. All rights reserved.</p>
+      <button type="button" class="motion-toggle" data-action="motion" aria-pressed="${S.motion === 'on'}">${ic.spark.replace('<svg', '<svg width="12" height="12"')} Animations: <strong>${S.motion === 'on' ? 'On' : 'Off'}</strong></button>
+      <p>${esc(BRAND.tagline)}</p></div>`;
+  $('#menuPanel').innerHTML = `
+    <div class="menu__head"><a href="#/" class="logo">${logo}</a><button type="button" class="icon-btn" data-action="close" aria-label="Close menu">${ic.x}</button></div>
+    <nav class="menu__links" aria-label="Mobile"><a href="#/">Home</a>${NAV.map((l) => `<a href="${l.to}">${l.label}</a>`).join('')}</nav>
+    <p class="menu__label">Shop by style</p>
+    <div class="menu__cats">${CATEGORIES.map((c) => `<a href="#/shop?cat=${c.id}" class="menu__cat"><img src="${src(c.img, 1)}" alt="" width="44" height="55" loading="lazy"><span>${c.name}</span></a>`).join('')}</div>
+    <a class="btn btn--whatsapp btn--block menu__wa" href="${wa}" target="_blank" rel="noopener noreferrer">${ic.wa} Message us on WhatsApp</a>`;
+  $('#searchPanel').innerHTML = `
+    <form class="search__form" role="search" id="searchForm">${ic.search.replace('<svg', '<svg width="20" height="20"')}<input type="search" id="searchInput" data-autofocus placeholder="Search tumblers, mugs, names…" aria-label="Search cups" autocomplete="off"><button type="button" class="icon-btn" data-action="close" aria-label="Close search">${ic.x}</button></form>
+    <p class="search__label" id="searchLabel">Popular right now</p><ul class="search__results" id="searchResults"></ul><div id="searchAll"></div>`;
+  updateBadges();
+}
+function renderSearch(q) {
+  const s = q.trim().toLowerCase();
+  const res = s ? PRODUCTS.filter((p) => `${p.name} ${p.desc} ${p.cats.join(' ')}`.toLowerCase().includes(s)).slice(0, 6) : PRODUCTS.filter((p) => p.badges?.includes('favorite')).slice(0, 4);
+  $('#searchLabel').textContent = s ? (res.length ? 'Results' : 'No matches yet') : 'Popular right now';
+  $('#searchResults').innerHTML = res.map((p) => `<li><a href="#/product/${p.id}"><img src="${src(p.imgs[0], 1)}" alt="" width="48" height="60"><span><strong>${esc(p.name)}</strong>${p.price !== null ? `<small>${fmt(p.price)}</small>` : ''}</span></a></li>`).join('');
+  $('#searchAll').innerHTML = s ? `<a class="link-arrow" href="#/shop?q=${encodeURIComponent(q.trim())}">See all results ${ic.arrow}</a>` : '';
+}
+
+/* overlays with focus trap */
+const overlays = [];
+function openOverlay(id) {
+  const o = $('#' + id);
+  if (overlays.includes(o)) return;
+  o._prev = document.activeElement;
+  o.classList.add('is-open'); o.setAttribute('aria-hidden', 'false');
+  overlays.push(o); document.body.style.overflow = 'hidden';
+  setTimeout(() => { const f = $('[data-autofocus]', o) || focusables(o)[0]; f?.focus(); }, 60);
+}
+function closeOverlay(o = overlays[overlays.length - 1]) {
+  if (!o) return;
+  o.classList.remove('is-open'); o.setAttribute('aria-hidden', 'true');
+  overlays.splice(overlays.indexOf(o), 1);
+  if (!overlays.length) document.body.style.overflow = '';
+  o._prev?.focus?.();
+}
+const focusables = (el) => $$('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])', el).filter((e) => e.offsetParent !== null);
+
+function renderCart() {
+  const panel = $('#cartPanel');
+  const n = S.cart.reduce((s, i) => s + i.qty, 0);
+  if (!S.cart.length) {
+    panel.innerHTML = `<header class="drawer__head"><h2>Your bag <span class="drawer__count">(0)</span></h2><button type="button" class="icon-btn" data-action="close" aria-label="Close bag">${ic.x}</button></header>
+      <div class="drawer__empty">${heartFill('big-heart')}<p class="drawer__empty-title">Your bag is empty</p><p>Find a cup you love, or design your own in 3D.</p><a class="btn btn--primary" href="#/shop">Shop cups</a><a class="btn btn--outline" href="#/custom">Design in 3D</a></div>`;
+    return;
+  }
+  const priced = S.cart.filter((i) => i.price !== null), sub = priced.reduce((s, i) => s + i.price * i.qty, 0), quote = priced.length < S.cart.length;
+  panel.innerHTML = `<header class="drawer__head"><h2>Your bag <span class="drawer__count">(${n})</span></h2><button type="button" class="icon-btn" data-action="close" aria-label="Close bag">${ic.x}</button></header>
+    <ul class="drawer__items">${S.cart.map((it) => `<li class="line">
+      <a class="line__img" href="${it.productId === 'custom' ? '#/custom' : '#/product/' + it.productId}"><img src="${it.image.startsWith('data:') ? it.image : src(it.image, 1)}" alt="" width="76" height="95"></a>
+      <div class="line__body"><div class="line__top"><p class="line__name">${esc(it.name)}</p><span class="line__price">${it.price === null ? 'Quote' : fmt(it.price * it.qty)}</span></div>
+      ${it.options.length ? `<dl class="line__opts">${it.options.map((o) => `<div><dt>${esc(o.label)}:</dt> <dd>${esc(o.value)}</dd></div>`).join('')}</dl>` : ''}
+      <div class="line__actions">${qtyHTML(it.qty, 'Quantity for ' + it.name, true, `data-key="${esc(it.key)}"`)}<button type="button" class="line__remove" data-action="remove" data-key="${esc(it.key)}">${ic.trash} Remove</button></div></div></li>`).join('')}</ul>
+    <footer class="drawer__foot">
+      <div class="field"><label class="field__label" for="orderNotes">Anything else we should know? (optional)</label><input id="orderNotes" class="input" maxlength="200" placeholder="Event date, gift message…" value="${esc(S.notes)}"></div>
+      <div class="drawer__total"><span>Subtotal</span><strong>${priced.length ? fmt(sub) : 'Quote'}</strong></div>
+      ${quote || !BRAND.pricesConfirmed ? `<p class="fine">${[quote && 'Custom items are quoted on WhatsApp.', !BRAND.pricesConfirmed && 'Sample prices. Your final total is confirmed on WhatsApp.'].filter(Boolean).join(' ')}</p>` : ''}
+      <a class="btn btn--whatsapp btn--block btn--lg" id="cartWa" href="${waUrl(orderMsg(S.cart, S.notes))}" target="_blank" rel="noopener noreferrer">${ic.wa} Send order on WhatsApp</a>
+      <p class="fine fine--center">Opens WhatsApp with your full order written out. Nothing is charged here.</p>
+    </footer>`;
+}
+
+let toastTimer;
+function showToast(name, image) {
+  clearTimeout(toastTimer);
+  $('#toastRegion').innerHTML = `<div class="toast"><img src="${image.startsWith('data:') ? image : src(image, 1)}" alt="" width="40" height="50"><div class="toast__body"><strong>Added to your bag ♡</strong><span>${esc(name)}</span></div><button type="button" class="toast__action" data-action="cart">View bag</button><button type="button" class="icon-btn icon-btn--sm" data-action="toast-x" aria-label="Dismiss">${ic.x.replace('width="20" height="20"', 'width="16" height="16"')}</button></div>`;
+  toastTimer = setTimeout(() => ($('#toastRegion').innerHTML = ''), 4200);
+}
+
+/* =========================================================================
+   PERSONALIZER (ready-made products)
+   ========================================================================= */
+function defaults(ids) { const v = {}; ids.forEach((id) => (v[id] = OPT[id].kind === 'text' || OPT[id].kind === 'textarea' ? '' : id === 'font' ? 'Script' : AS_PICTURED)); return v; }
+function orderOptions(ids, v) {
+  const hasName = Boolean(v.name?.trim());
+  return ids.filter((id) => !(id === 'font' && !hasName)).map((id) => ({ label: ORDER_LABEL[id], value: (v[id] || '').trim() })).filter((o) => o.value);
+}
+function personalizerHTML(uid, ids, v) {
+  return ids.map((id) => {
+    const d = OPT[id], fid = `${uid}-${id}`;
+    if (d.kind === 'textarea') return `<button type="button" class="add-note" data-action="add-note">${ic.plus} Add a note (gift message, theme, occasion…)</button>
+      <div class="field" hidden data-note><div class="field__top"><label class="field__label" for="${fid}">${d.label}</label><span class="field__count" data-count>0/${d.max}</span></div><textarea id="${fid}" class="input" rows="3" maxlength="${d.max}" placeholder="${esc(d.ph)}" data-opt="${id}"></textarea></div>`;
+    if (d.kind === 'text') return `<div class="field"><div class="field__top"><label class="field__label" for="${fid}">${d.label}</label><span class="field__count" data-count>0/${d.max}</span></div><input id="${fid}" class="input" maxlength="${d.max}" placeholder="${esc(d.ph)}" autocomplete="off" data-opt="${id}" aria-describedby="${fid}-h"><p class="field__help" id="${fid}-h">${d.help}</p></div>`;
+    if (d.kind === 'swatch') {
+      const all = [{ v: AS_PICTURED }, ...COLORS];
+      return `<fieldset class="field"><legend class="field__label">${d.label} <span class="field__value" data-val="${id}">${esc(v[id])}</span></legend><div class="swatches">${all.map((c) => `<label class="swatch ${v[id] === c.v ? 'is-selected' : ''}" title="${c.v}"><input type="radio" class="sr-only" name="${fid}" value="${c.v}" data-opt="${id}" ${v[id] === c.v ? 'checked' : ''}><span class="swatch__dot ${c.hex ? '' : 'swatch__dot--pictured'}" ${c.hex ? `style="background:${c.hex}"` : ''}>${v[id] === c.v ? ic.check.replace('width="18" height="18"', 'width="14" height="14"') : ''}</span><span class="sr-only">${c.v}</span></label>`).join('')}</div></fieldset>`;
+    }
+    const choices = id === 'font' ? d.choices : [AS_PICTURED, ...d.choices];
+    return `<fieldset class="field" ${id === 'font' ? 'hidden data-font' : ''}><legend class="field__label">${d.label}</legend><div class="chips">${choices.map((c) => `<label class="chip ${v[id] === c ? 'is-selected' : ''}"><input type="radio" class="sr-only" name="${fid}" value="${c}" data-opt="${id}" ${v[id] === c ? 'checked' : ''}><span ${id === 'font' ? `style="font-family:${FONT_FAMILY[c]};font-size:1.05rem"` : ''}>${c}</span></label>`).join('')}</div></fieldset>`;
+  }).join('');
+}
+function pdpHTML(p, compact) {
+  const ids = OPTS_BY_TYPE[p.type], saved = S.favs.includes(p.id), cat = catById(p.cats[0]), uid = (compact ? 'q-' : 'p-') + p.id;
+  return `<div class="pdp ${compact ? 'pdp--compact' : ''}" data-pdp="${p.id}">
+    <div class="pdp__gallery">
+      <div class="pdp__track" data-track>${p.imgs.map((im, i) => `<div class="pdp__slide">${pic(im, i ? `${p.name} — photo ${i + 1}` : p.alt, { eager: i === 0, sizes: '(max-width:860px) 100vw, 50vw' })}</div>`).join('')}</div>
+      ${p.imgs.length > 1 ? `<div class="pdp__thumbs" role="tablist" aria-label="Product photos">${p.imgs.map((im, i) => `<button type="button" role="tab" class="pdp__thumb ${i ? '' : 'is-active'}" aria-selected="${!i}" aria-label="Show photo ${i + 1}" data-action="thumb" data-i="${i}">${pic(im, '', { sizes: '80px' })}</button>`).join('')}</div>` : ''}
+    </div>
+    <div class="pdp__info">
+      ${cat ? `<a class="eyebrow" href="#/shop?cat=${cat.id}">${cat.name}</a>` : ''}
+      <div class="pdp__title-row"><${compact ? 'h2' : 'h1'} class="pdp__title">${esc(p.name)}</${compact ? 'h2' : 'h1'}><button type="button" class="icon-btn pdp__fav ${saved ? 'is-saved' : ''}" data-action="fav" data-fav="${p.id}" aria-pressed="${saved}" aria-label="Save for later">${ic.heartO}</button></div>
+      <div class="pdp__price"><span>${priceText(p.price)}</span>${p.price !== null && !BRAND.pricesConfirmed ? '<small>Sample price — confirmed on WhatsApp</small>' : ''}</div>
+      <p class="pdp__desc">${esc(p.desc)}</p>
+      <div class="pdp__personalize"><h2 class="pdp__h">Personalize it</h2>${personalizerHTML(uid, ids, defaults(ids))}</div>
+      <div class="pdp__buy" data-buy>${qtyHTML(1, 'Quantity', false, 'data-pq')}<button type="button" class="btn btn--primary btn--grow" data-action="add">${ic.bag} Add to bag</button></div>
+      <a class="btn btn--whatsapp btn--block" data-wa target="_blank" rel="noopener noreferrer">${ic.wa} Order via WhatsApp</a>
+      <a class="pdp__3d" href="#/custom?type=${p.type}&color=${encodeURIComponent(p.color || '')}">${ic.cube}<span>Want to play with colors? Design it in 3D</span>${ic.arrow}</a>
+      <ul class="pdp__features">${p.feats.map((f) => `<li>${ic.check} ${esc(f)}</li>`).join('')}</ul>
+      ${compact ? `<a class="link-arrow" href="#/product/${p.id}">See full details ${ic.arrow}</a>` : `<div class="pdp__note">${ic.chat}<div><strong>How ordering works</strong><p>Add your cup to the bag or send it straight to WhatsApp. We’ll reply to confirm your design, price and next steps — nothing is charged on this site.</p></div></div>`}
+      <p class="pdp__made">${ic.pin} Handmade in ${esc(BRAND.location)}</p>
+    </div>
+    ${compact ? '' : `<div class="sticky-buy" data-sticky aria-hidden="true"><div class="sticky-buy__info"><span class="sticky-buy__name">${esc(p.name)}</span><span class="sticky-buy__price">${priceText(p.price)}</span></div><a class="btn btn--whatsapp btn--icon" data-wa target="_blank" rel="noopener noreferrer" aria-label="Order via WhatsApp" tabindex="-1">${ic.wa}</a><button type="button" class="btn btn--primary" data-action="add" tabindex="-1">Add to bag</button></div>`}
+  </div>`;
+}
+function bindPdp(root, p) {
+  const ids = OPTS_BY_TYPE[p.type], st = { v: defaults(ids), qty: 1 };
+  root._pdp = st;
+  const line = () => ({ name: p.name, price: p.price, qty: st.qty, options: orderOptions(ids, st.v) });
+  const sync = () => {
+    const url = waUrl(singleMsg(line()));
+    $$('[data-wa]', root).forEach((a) => (a.href = url));
+    $('[data-font]', root)?.toggleAttribute('hidden', !st.v.name?.trim());
+    $$('[data-pq]', root).forEach((b) => b.parentElement.querySelector('output').textContent = st.qty);
+    const dec = $('[data-action="qty-dec"][data-pq]', root); if (dec) dec.disabled = st.qty <= 1;
+  };
+  root.addEventListener('input', (e) => {
+    const t = e.target, id = t.dataset.opt; if (!id) return;
+    st.v[id] = t.value;
+    if (t.type === 'radio') {
+      $$(`input[name="${t.name}"]`, root).forEach((r) => { const l = r.closest('label'); l.classList.toggle('is-selected', r.checked); if (l.classList.contains('swatch')) l.querySelector('.swatch__dot').innerHTML = r.checked ? ic.check.replace('width="18" height="18"', 'width="14" height="14"') : ''; });
+      const val = $(`[data-val="${id}"]`, root); if (val) val.textContent = t.value;
+    } else { const c = t.closest('.field').querySelector('[data-count]'); if (c) c.textContent = `${t.value.length}/${t.maxLength}`; }
+    sync();
+  });
+  root._add = (btn) => {
+    addToCart({ productId: p.id, image: p.imgs[0], ...line() }, btn.closest('.pdp').querySelector('.pdp__slide') || btn);
+    const b = $('[data-buy] [data-action="add"]', root);
+    b.classList.add('is-done'); b.innerHTML = `${ic.check} Added`;
+    const r = btn.getBoundingClientRect(); burst(r.left + r.width / 2, r.top);
+    setTimeout(() => { b.classList.remove('is-done'); b.innerHTML = `${ic.bag} Add to bag`; }, 1800);
+  };
+  root._qty = (d) => { st.qty = Math.max(1, Math.min(99, st.qty + d)); sync(); };
+  const track = $('[data-track]', root);
+  track.addEventListener('scroll', () => { const i = Math.round(track.scrollLeft / track.clientWidth); $$('.pdp__thumb', root).forEach((t, k) => { t.classList.toggle('is-active', k === i); t.setAttribute('aria-selected', k === i); }); }, { passive: true });
+  track.addEventListener('pointermove', (e) => { const s = e.target.closest('.pdp__slide'); if (!s) return; const r = s.getBoundingClientRect(); s.style.setProperty('--zx', ((e.clientX - r.left) / r.width) * 100 + '%'); s.style.setProperty('--zy', ((e.clientY - r.top) / r.height) * 100 + '%'); });
+  const sticky = $('[data-sticky]', root);
+  if (sticky) {
+    const buy = $('[data-buy]', root);
+    const onS = () => { const vis = buy.getBoundingClientRect().bottom < 0; sticky.classList.toggle('is-visible', vis); sticky.setAttribute('aria-hidden', !vis); $$('a,button', sticky).forEach((x) => (x.tabIndex = vis ? 0 : -1)); };
+    addEventListener('scroll', onS, { passive: true }); cleanups.push(() => removeEventListener('scroll', onS)); onS();
+  }
+  sync();
+}
+
+/* =========================================================================
+   PAGES
+   ========================================================================= */
+function Home() {
+  const favs = [...PRODUCTS].sort((a, b) => b.pop - a.pop).slice(0, 8);
+  const ribbonItems = ['Made with love', 'Your name, your colors', 'Glitter tumblers', '3D toppers', 'Glass mason mugs', 'Handmade in Nebraska'];
+  const ribbon = (items) => [0, 1].map(() => `<span>${items.map((t) => `${t} ${ic.heart}`).join(' ')}</span>`).join('');
+  const occasions = ['Birthdays', 'Besties', 'Mother’s Day', 'Teachers', 'Bridesmaids', 'Baby showers', 'Graduation', 'Just because'];
+  const reelA = ['blue-floral-mug-2', 'glam-name-2', 'tropical-mug', 'ocean-2', 'pink-crush-2', 'vanilla-cupcake', 'honey-name-mug', 'galaxy-topper-2'];
+  const reelB = ['coffee-girl', 'ice-princess', 'pink-boba', 'sweet-baker', 'purple-kawaii', 'golden-apple', 'midnight-jar', 'creator-glam'];
+  const reelLink = (im) => { const p = PRODUCTS.find((x) => x.imgs.includes(im)); return `<a href="#/product/${p.id}" aria-label="${esc(p.name)}">${pic(im, '', { sizes: '240px' })}</a>`; };
+  const reel = (list) => [...list, ...list].map(reelLink).join('');
+  return `
+  <section class="hero" id="hero">
+    ${heartsLayer(18)}
+    <div class="container hero__inner">
+      <div class="hero__media">
+        <div class="par hero__main" data-depth="12"><div class="hero__frame float">${pic('glam-name-1', 'Pink glitter tumbler personalized with the name Natalia', { eager: true, sizes: '(max-width:860px) 60vw, 34vw' })}</div></div>
+        <div class="par hero__side hero__side--top" data-depth="24"><div class="hero__frame float float--2">${pic('ocean-1', 'Aqua under-the-sea glitter tumbler', { eager: true, sizes: '(max-width:860px) 34vw, 17vw' })}</div></div>
+        <div class="par hero__side hero__side--bottom" data-depth="18"><div class="hero__frame float float--3">${pic('honey-name-mug', 'Golden glass mason mug with the name Ana', { eager: true, sizes: '(max-width:860px) 34vw, 17vw' })}</div></div>
+        <svg class="hero__stamp" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="stampc" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/></defs><circle cx="60" cy="60" r="58" fill="#fff"/><g class="hero__stamp-text"><text font-size="9.6" fill="currentColor"><textPath href="#stampc" textLength="272" lengthAdjust="spacing">MADE WITH LOVE · DESIGNED FOR YOU ·</textPath></text></g><g class="beat"><path d="M60 74c-11-7.5-17-13-17-19.5a8.5 8.5 0 0 1 17-3.2 8.5 8.5 0 0 1 17 3.2C77 61 71 66.5 60 74Z" fill="#e8478b"/></g></svg>
+        <div class="hero__badge"><i>${ic.cube}</i> Now in 3D</div>
+        ${sparkles(6, '#ff8fb8')}
+      </div>
+      <div class="hero__text">
+        <p class="hero__eyebrow">${ic.spark} ${COPY.hero.eyebrow}</p>
+        <h1 class="hero__title">${COPY.hero.title.map((l, i) => `<span><span class="${i === 1 ? 'accent' : ''}">${l}${i === 1 ? '<svg class="squiggle" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 12c40-10 60 8 100-2s60-10 100 0 60 6 92-4"/></svg>' : ''}</span></span>`).join('')}</h1>
+        <p class="hero__lead">${COPY.hero.text}</p>
+        <div class="hero__ctas"><a class="btn btn--primary btn--lg" href="#/shop" data-burst>${COPY.hero.primary}</a><a class="btn btn--outline btn--lg" href="#/custom">${ic.cube.replace('<svg', '<svg width="20" height="20"')} ${COPY.hero.secondary}</a></div>
+        <ul class="hero__points">${COPY.hero.points.map((p) => `<li>${ic.heart} ${p}</li>`).join('')}</ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbons" aria-hidden="true">
+    <div class="ribbon ribbon--pink"><div class="marquee" style="--speed:40s"><div class="marquee__track">${ribbon(ribbonItems)}</div></div></div>
+    <div class="ribbon ribbon--dark"><div class="marquee marquee--reverse" style="--speed:46s"><div class="marquee__track">${ribbon(['Custom gifts', 'Every sip, a little joy', 'Sparkle everyday', 'Made just for you', 'Personalized with love'])}</div></div></div>
+  </div>
+
+  <section class="section" aria-labelledby="cats">
+    <div class="container">
+      <div class="section-row"><div class="section-head" data-reveal><p class="eyebrow">Shop by style</p><h2 class="h2" id="cats">Find your kind of <em>cup</em></h2></div><a class="link-arrow hide-sm" href="#/shop">Shop all ${ic.arrow}</a></div>
+      <div class="cats">${CATEGORIES.map((c, i) => `<a href="#/shop?cat=${c.id}" class="cat" data-reveal style="--i:${i}"><div class="cat__media">${pic(c.img, '', { sizes: '(max-width:640px) 42vw, 16vw' })}<span class="cat__go">${ic.arrow}</span></div><h3 class="cat__name">${c.name}</h3><p class="cat__desc">${c.desc}</p></a>`).join('')}</div>
+    </div>
+  </section>
+
+  ${waveSVG('#fbf1ec')}
+  <section class="section section--cream" aria-labelledby="favs" style="padding-top:40px">
+    <div class="container">
+      <div class="section-row"><div class="section-head" data-reveal><p class="eyebrow">Most loved</p><h2 class="h2" id="favs">Customer <em>Favorites</em></h2><p class="section-head__text">Made to be loved. Designed to be yours.</p></div><a class="link-arrow hide-sm" href="#/shop?sort=popular">Shop all cups ${ic.arrow}</a></div>
+      <div class="grid">${favs.map((p, i) => cardHTML(p, i)).join('')}</div>
+      <div class="center-cta"><a class="btn btn--outline" href="#/shop">Shop all cups</a></div>
+    </div>
+  </section>
+  ${waveSVG('#fbf1ec', true)}
+
+  <section class="section" aria-labelledby="gift-title" style="padding-top:40px">
+    <div class="container">
+      <div class="gift" data-reveal="zoom">
+        ${heartsLayer(14, true)}
+        <p class="eyebrow">Made for gifting</p>
+        <h2 class="h2" id="gift-title">A cup with their name says <em style="color:#fff">“I thought of you.”</em></h2>
+        <p class="lead">Birthdays, besties, moms, teachers — pick the occasion and we’ll help you make it unforgettable.</p>
+        <div class="occasions marquee" style="--speed:34s"><div class="marquee__track">${[...occasions, ...occasions].map((o) => `<a href="#/custom?notes=${encodeURIComponent('Gift for: ' + o)}">${ic.heart} ${o}</a>`).join('')}</div></div>
+        <a class="btn btn--white btn--lg" href="#/custom" data-burst>Create a gift ${ic.arrow}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section teaser" aria-labelledby="teaser-title">
+    ${heartsLayer(8)}
+    <div class="container teaser__inner" style="position:relative;z-index:1">
+      <div class="teaser__preview" data-reveal="zoom"><span class="teaser__badge">${ic.cube} 3D designer</span><div id="teaserCup" style="height:100%;display:grid;place-items:center"></div></div>
+      <div class="teaser__text" data-reveal="right">
+        <p class="eyebrow">Make it yours</p>
+        <h2 class="h2" id="teaser-title">Spin it. Style it. <em>Make it yours.</em></h2>
+        <ul class="teaser__list">
+          <li><i>${ic.rotate}</i> Turn your cup 360° in 3D</li>
+          <li><i>${ic.palette}</i> Any color, glitter, ombré & lid finish</li>
+          <li><i>${ic.type}</i> Your name in your favorite lettering</li>
+          <li><i>${ic.heart}</i> Hearts, flowers, stars & 3D toppers</li>
+        </ul>
+        <a class="btn btn--pink btn--lg" href="#/custom" data-burst>${ic.cube.replace('<svg', '<svg width="20" height="20"')} Open the 3D designer</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="container">
+      ${sectionHead('How it works', 'Ordering a custom cup is <em>easy</em>', '', true).replace('<h2 class="h2">', '<h2 class="h2" id="how-title">')}
+      <ol class="steps">${COPY.how.map((s, i) => `<li class="step" data-reveal style="--i:${i}"><span class="step__num">0${i + 1}</span><span class="step__icon">${ic[s.i]}</span><h3>${s.t}</h3><p>${s.d}</p></li>`).join('')}</ol>
+    </div>
+  </section>
+
+  ${waveSVG('#fde8ee')}
+  <section class="section section--blush" id="about" aria-labelledby="about-title" style="padding-top:40px">
+    <div class="container about">
+      <div class="about__media" data-reveal="left">
+        <div class="about__photo about__photo--main">${pic('process', 'Pouring pink resin by hand at the work table', { sizes: '(max-width:860px) 70vw, 30vw' })}</div>
+        <div class="about__photo about__photo--small">${pic('studio', 'The studio: a work desk and shelves full of glitter and supplies', { sizes: '(max-width:860px) 40vw, 18vw' })}</div>
+        ${heartFill('about__sticker beat')}
+      </div>
+      <div class="about__text" data-reveal="right">
+        <p class="eyebrow">About us</p>
+        <h2 class="h2" id="about-title">Small details. <em>Big love.</em></h2>
+        <p class="lead">${COPY.about}</p>
+        <p class="about__loc">${ic.pin} Handmade in ${esc(BRAND.location)}</p>
+        <a class="btn btn--primary" href="#/custom">Start a custom order</a>
+      </div>
+    </div>
+  </section>
+  ${waveSVG('#fde8ee', true)}
+
+  <section class="section" aria-labelledby="reel-title" style="padding-top:40px;overflow:hidden">
+    <div class="container">${sectionHead('Inspiration', 'A little inspiration for your next <em>favorite cup.</em>', '', true).replace('<h2 class="h2">', '<h2 class="h2" id="reel-title">')}</div>
+    <div class="reel">
+      <div class="marquee" style="--speed:60s"><div class="marquee__track">${reel(reelA)}</div></div>
+      <div class="marquee marquee--reverse" style="--speed:70s"><div class="marquee__track">${reel(reelB)}</div></div>
+    </div>
+  </section>
+
+  ${REVIEWS.length ? `<section class="section section--cream"><div class="container">${sectionHead('Kind words', 'From our customers', '', true)}<div class="reviews">${REVIEWS.map((r) => `<figure class="review"><blockquote>“${esc(r.text)}”</blockquote><figcaption>${esc(r.name)}</figcaption></figure>`).join('')}</div></div></section>` : ''}
+
+  <section class="final-cta" aria-labelledby="final-title">
+    <div class="container">
+      <div class="final-cta__box" data-reveal="zoom">
+        ${heartsLayer(12)}
+        <div class="final-cta__photos" aria-hidden="true"><img src="${src('pink-crush-1', 1)}" alt="" loading="lazy"><img src="${src('bestie-topper', 1)}" alt="" loading="lazy"></div>
+        ${heartFill('final-cta__heart beat')}
+        <h2 class="h2" id="final-title">Have a cup idea? <em style="color:var(--bubble)">Let's make it happen!</em></h2>
+        <p>Your imagination, your colors, your very own custom cup.</p>
+        <a class="btn btn--white btn--lg" href="#/custom" data-burst>Start your custom order</a>
+      </div>
+    </div>
+  </section>`;
+}
+function bindHome() {
+  // hero parallax + sparkle trail
+  const hero = $('#hero'), pars = $$('.par', hero);
+  const move = (e) => {
+    trail(e);
+    if (e.pointerType !== 'mouse' || S.motion === 'off') return;
+    const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+    pars.forEach((p) => (p.style.transform = `translate(${x * -p.dataset.depth}px,${y * -p.dataset.depth}px)`));
+  };
+  hero.addEventListener('pointermove', move);
+  // teaser: cycle names & colors with a typing effect
+  const names = ['Emma', 'Sofia', 'Bestie', 'Mia', 'Mom', 'Valentina'], cols = ['#F4AFC4', '#B8A5E6', '#E04A86', '#78D2CC', '#F5CB45', '#3F7BC8'], fonts = ['Script', 'Bubble', 'Script', 'Classic', 'Bubble', 'Script'];
+  let ni = 0, ci = 0, typed = '', del = false;
+  const el = $('#teaserCup');
+  const tick = () => {
+    if (!el.isConnected) return;
+    const target = names[ni];
+    if (!del) { typed = target.slice(0, typed.length + 1); if (typed === target) { del = true; return schedule(1600); } }
+    else { typed = typed.slice(0, -1); if (!typed) { del = false; ni = (ni + 1) % names.length; ci = (ci + 1) % cols.length; } }
+    el.innerHTML = cupSVG({ type: 'tumbler', hex: cols[ci], name: typed, font: fonts[ni] });
+    schedule(del ? 60 : 130);
+  };
+  const schedule = (ms) => { const t = setTimeout(tick, S.motion === 'off' ? Math.max(ms, 1200) : ms); cleanups.push(() => clearTimeout(t)); };
+  el.innerHTML = cupSVG({ type: 'tumbler', hex: cols[0], name: '', font: 'Script' });
+  schedule(600);
+}
+
+function Shop(r) {
+  return `<div class="shop">
+    <div class="shop__hero">${heartsLayer(10)}<div class="container"><nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a> <span aria-hidden="true">/</span> <span id="crumbTitle">Shop All</span></nav><h1 class="h1" id="shopTitle">Shop All</h1><p class="shop__sub" id="shopSub"></p></div></div>
+    <div class="shop__bar"><div class="container">
+      <div class="chips chips--scroll" role="group" aria-label="Filter by category" id="shopChips"></div>
+      <div class="shop__tools">
+        <label class="search-field">${ic.search}<input type="search" id="shopQ" placeholder="Search cups" aria-label="Search cups"></label>
+        ${BRAND.pricesConfirmed ? '<label class="price-filter"><span id="priceLbl"></span><input type="range" id="shopPrice"></label>' : ''}
+        <div class="shop__meta"><span class="shop__count" id="shopCount" aria-live="polite"></span><label class="select"><span class="sr-only">Sort</span><select id="shopSort"><option value="popular">Most popular</option><option value="new">Newest</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label></div>
+      </div>
+    </div></div>
+    <div class="container shop__body"><p class="shop__count-sm" id="shopCountSm" aria-hidden="true"></p><div id="shopGrid"></div>${BRAND.pricesConfirmed ? '' : '<p class="shop__note">Sample prices shown — your final price is confirmed on WhatsApp.</p>'}</div>
+  </div>`;
+}
+function bindShop(r) {
+  const P = r.params, FAV = '__fav', SAVED = '__saved';
+  const prices = PRODUCTS.filter((p) => p.price !== null).map((p) => p.price), MIN = Math.min(...prices), MAX = Math.max(...prices);
+  const st = { q: P.get('q') || '', f: P.get('saved') ? SAVED : P.get('fav') ? FAV : P.get('cat') || '', sort: P.get('sort') || 'popular', max: MAX };
+  $('#shopQ').value = st.q; $('#shopSort').value = st.sort;
+  const pr = $('#shopPrice'); if (pr) { pr.min = MIN; pr.max = MAX; pr.value = MAX; }
+  const draw = () => {
+    const q = st.q.trim().toLowerCase();
+    const list = PRODUCTS.filter((p) => {
+      if (st.f === SAVED && !S.favs.includes(p.id)) return false;
+      if (st.f === FAV && !p.badges?.includes('favorite')) return false;
+      if (st.f && st.f !== SAVED && st.f !== FAV && !p.cats.includes(st.f)) return false;
+      if (BRAND.pricesConfirmed && p.price !== null && p.price > st.max) return false;
+      return !q || `${p.name} ${p.desc} ${p.cats.map((c) => catById(c)?.name).join(' ')}`.toLowerCase().includes(q);
+    }).sort((a, b) => st.sort === 'new' ? b.added.localeCompare(a.added) : st.sort === 'price-asc' ? (a.price ?? 1e9) - (b.price ?? 1e9) : st.sort === 'price-desc' ? (b.price ?? -1) - (a.price ?? -1) : b.pop - a.pop);
+    const cat = catById(st.f);
+    const title = st.f === SAVED ? 'Saved for later' : st.f === FAV ? 'Customer Favorites' : cat?.name || 'Shop All';
+    $('#shopTitle').textContent = title; $('#crumbTitle').textContent = title;
+    $('#shopSub').textContent = st.f === SAVED ? 'Your hearted cups, all in one place.' : cat?.desc || 'Handmade, personalized and made just for you.';
+    const chips = [['', 'All'], [FAV, 'Fan favorites'], ...CATEGORIES.map((c) => [c.id, c.name]), ...(S.favs.length || st.f === SAVED ? [[SAVED, `♡ Saved (${S.favs.length})`]] : [])];
+    $('#shopChips').innerHTML = chips.map(([id, l]) => `<button type="button" class="chip ${st.f === id ? 'is-selected' : ''}" aria-pressed="${st.f === id}" data-chip="${id}">${l}</button>`).join('');
+    const label = `${list.length} ${list.length === 1 ? 'cup' : 'cups'}`;
+    $('#shopCount').textContent = label; $('#shopCountSm').textContent = label;
+    if (pr) $('#priceLbl').textContent = `Price: up to ${fmt(st.max)}`;
+    const filtered = st.q || st.f || st.max < MAX;
+    $('#shopGrid').innerHTML = list.length ? `<div class="grid">${list.map((p, i) => cardHTML(p, i, i < 4)).join('')}<a href="#/custom" class="custom-card" data-reveal>${heartsLayer(5)}<span class="cube">${ic.cube}</span><strong>Don’t see it? Design it in 3D.</strong><span>Any name, color or theme.</span><span class="btn btn--pink btn--sm">Start designing</span></a></div>`
+      : `<div class="empty"><h2>${st.f === SAVED && !st.q ? 'No saved cups yet' : 'No cups match your search'}</h2><p>${st.f === SAVED && !st.q ? 'Tap the heart on any cup to save it here.' : 'Try another word, or design exactly what you have in mind.'}</p><div class="empty__ctas">${filtered ? '<button type="button" class="btn btn--outline" data-action="reset-filters">Clear filters</button>' : ''}<a class="btn btn--primary" href="#/custom${st.q ? '?notes=' + encodeURIComponent(st.q) : ''}">Design a custom cup</a></div></div>`;
+    initReveal($('#shopGrid')); sizeHearts();
+  };
+  $('#shopChips').addEventListener('click', (e) => { const b = e.target.closest('[data-chip]'); if (b) { st.f = b.dataset.chip; draw(); } });
+  $('#shopQ').addEventListener('input', (e) => { st.q = e.target.value; draw(); });
+  $('#shopSort').addEventListener('change', (e) => { st.sort = e.target.value; draw(); });
+  pr?.addEventListener('input', (e) => { st.max = +e.target.value; draw(); });
+  $('#shopGrid').addEventListener('click', (e) => { if (e.target.closest('[data-action="reset-filters"]')) { st.q = ''; st.f = ''; st.max = MAX; $('#shopQ').value = ''; if (pr) pr.value = MAX; draw(); } });
+  draw();
+}
+
+function ProductPage(id) {
+  const p = productById(id);
+  if (!p) return `<div class="container empty empty--page"><h1 class="h2">We couldn’t find that cup</h1><p>It may have been renamed or removed. Take a look at the full collection instead.</p><a class="btn btn--primary" href="#/shop">Shop all cups</a></div>`;
+  const cat = catById(p.cats[0]);
+  const related = PRODUCTS.filter((x) => x.id !== p.id).map((x) => ({ x, s: x.cats.filter((c) => p.cats.includes(c)).length * 100 + x.pop })).sort((a, b) => b.s - a.s).slice(0, 4).map((r) => r.x);
+  return `<div class="product-page"><div class="container"><nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a> <span aria-hidden="true">/</span> <a href="#/shop">Shop</a>${cat ? ` <span aria-hidden="true">/</span> <a href="#/shop?cat=${cat.id}">${cat.name}</a>` : ''}</nav>${pdpHTML(p)}</div>
+    <section class="section section--cream" aria-labelledby="related"><div class="container"><h2 class="h2" id="related" data-reveal>You may also <em>love</em></h2><div class="grid grid--related">${related.map((x, i) => cardHTML(x, i)).join('')}</div></div></section></div>`;
+}
+
+/* =========================================================================
+   3D DESIGNER — page
+   ========================================================================= */
+const DS_DEFAULT = { type: 'tumbler', color: 'Blush Pink', custom: '#ff9ec4', ombre: '', glitter: 'Sparkly', lid: 'Silver', mugLid: 'Crystal lid', topper: 'Heart', topperColor: 'Hot Pink', straw: 'Pink', name: '', line2: '', font: 'Script', textColor: 'White', orient: 'Vertical', size: 100, decos: ['Hearts'], notes: '', qty: 1 };
+let DS = { ...DS_DEFAULT };
+const dsHex = () => (DS.color === 'Custom' ? DS.custom : colorHex(DS.color));
+function dsOptions() {
+  const cup = CUP_TYPES.find((c) => c.v === DS.type).label;
+  return [
+    ['Cup type', cup], ['Main color', DS.color === 'Custom' ? `Custom (${DS.custom.toUpperCase()})` : DS.color], DS.ombre && ['Ombré into', DS.ombre], ['Glitter', DS.glitter],
+    ['Lid', DS.type === 'mug' ? `${DS.mugLid}, ${DS.lid}` : DS.lid], ['Topper', DS.topper === 'None' ? 'None' : `${DS.topper} (${DS.topperColor})`], ['Straw', DS.straw],
+    DS.name.trim() && ['Name customization', DS.name.trim()], DS.line2.trim() && ['Second line', DS.line2.trim()],
+    DS.name.trim() && ['Name style', `${DS.font}, ${DS.textColor}${DS.type === 'tumbler' ? ', ' + DS.orient.toLowerCase() : ''}`],
+    DS.decos.length && ['Decorations', DS.decos.join(', ')], DS.notes.trim() && ['Additional notes', DS.notes.trim()],
+  ].filter(Boolean).map(([label, value]) => ({ label, value }));
+}
+const dsLine = () => ({ name: `Custom ${CUP_TYPES.find((c) => c.v === DS.type).label}`, price: null, qty: DS.qty, options: dsOptions(), custom: true });
+
+const radioGroup = (key, items, cur, opts = {}) => `<div class="${opts.swatch ? 'swatches' : 'chips'}">${items.map((it) => {
+  const v = typeof it === 'string' ? it : it.v, sel = Array.isArray(cur) ? cur.includes(v) : cur === v;
+  const type = opts.multi ? 'checkbox' : 'radio';
+  if (opts.swatch) return `<label class="swatch ${sel ? 'is-selected' : ''}" title="${v}"><input type="${type}" class="sr-only" name="ds-${key}" value="${v}" data-ds="${key}" ${sel ? 'checked' : ''}><span class="swatch__dot" style="background:${it.hex}">${sel ? ic.check.replace('width="18" height="18"', 'width="14" height="14"') : ''}</span><span class="sr-only">${v}</span></label>`;
+  return `<label class="chip ${sel ? 'is-selected' : ''}"><input type="${type}" class="sr-only" name="ds-${key}" value="${v}" data-ds="${key}" ${sel ? 'checked' : ''}><span ${opts.font ? `style="font-family:${FONT_FAMILY[v]};font-size:1.05rem"` : ''}>${opts.icon ? opts.icon(v) : ''}${v}</span></label>`;
+}).join('')}</div>`;
+const field = (label, inner, extra = '') => `<fieldset class="field" ${extra}><legend class="field__label">${label}</legend>${inner}</fieldset>`;
+
+function CustomPage(r) {
+  DS = { ...DS_DEFAULT, decos: [...DS_DEFAULT.decos] };
+  const P = r.params;
+  if (CUP_TYPES.some((c) => c.v === P.get('type'))) DS.type = P.get('type');
+  if (COLORS.some((c) => c.v === P.get('color'))) DS.color = P.get('color');
+  if (P.get('name')) DS.name = P.get('name').slice(0, 18);
+  if (P.get('notes')) DS.notes = P.get('notes').slice(0, 300);
+  if (DS.type !== 'tumbler') DS.orient = 'Horizontal';
+  return `<section class="designer"><div class="container designer__inner">
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        ${heartsLayer(10)}
+        <div class="stage__loading" id="stageLoading">${heartFill()}<span>Loading your 3D cup…</span></div>
+        <span class="stage__price">Custom · quoted on WhatsApp</span>
+        <div class="stage__tools">
+          <button type="button" data-action="d-rotate" aria-pressed="true" aria-label="Auto-rotate" title="Auto-rotate">${ic.rotate}</button>
+          <button type="button" data-action="d-reset" aria-label="Reset view" title="Reset view">${ic.reset}</button>
+          <button type="button" data-action="d-download" aria-label="Download design image" title="Download image">${ic.download}</button>
+        </div>
+        <p class="stage__hint" id="stageHint">${ic.hand} Drag to spin · Scroll or pinch to zoom</p>
+      </div>
+    </div>
+    <div class="designer__panel" id="dpanel">
+      <div class="designer__head"><p class="eyebrow">3D designer</p><h1 class="h1">Design your <em>dream cup</em></h1><p class="lead">Spin it, color it, add your name. When you love it, send it to us on WhatsApp — we’ll confirm every detail before making it by hand.</p></div>
+      <div class="tabs" role="tablist" aria-label="Designer steps">
+        ${[['cup', 'Cup', ic.cup], ['color', 'Color', ic.palette], ['name', 'Name', ic.type], ['extras', 'Extras', ic.heart]].map(([id, l, i], k) => `<button type="button" role="tab" class="tab" id="tab-${id}" aria-controls="panel-${id}" aria-selected="${!k}" data-tab="${id}">${i}${l}</button>`).join('')}
+      </div>
+      <div id="dpanels">${designerPanels()}</div>
+      <div class="designer__actions">
+        <div class="pdp__buy">${qtyHTML(DS.qty, 'Quantity', false, 'data-dq')}<a class="btn btn--whatsapp btn--grow btn--lg" id="dWa" target="_blank" rel="noopener noreferrer">${ic.wa} Send my design</a></div>
+        <button type="button" class="btn btn--outline btn--block" data-action="d-add">${ic.bag} Add to bag & keep shopping</button>
+        <p class="fine fine--center">Tip: tap ${ic.download.replace('<svg', '<svg width="13" height="13" style="display:inline;vertical-align:-2px"')} on the preview to save a picture of your design and attach it in the WhatsApp chat. Nothing is charged on this site.</p>
+      </div>
+    </div>
+  </div></section>`;
+}
+function designerPanels(active = 'cup') {
+  const t = DS.type;
+  const panel = (id, html, next) => `<div class="tabpanel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}" ${active === id ? '' : 'hidden'}>${html}${next ? `<button type="button" class="next-btn" data-tab="${next}">Next: ${next[0].toUpperCase() + next.slice(1)} ${ic.arrow}</button>` : ''}</div>`;
+  const types = `<div class="types">${CUP_TYPES.map((c) => `<label class="type ${t === c.v ? 'is-selected' : ''}"><input type="radio" class="sr-only" name="ds-type" value="${c.v}" data-ds="type" ${t === c.v ? 'checked' : ''}><span class="type__img">${pic(c.img, '', { sizes: '120px' })}</span><span class="type__label">${c.label}</span><span class="type__text">${c.text}</span>${t === c.v ? `<span class="type__check">${ic.check}</span>` : ''}</label>`).join('')}</div>`;
+  return panel('cup', field('Choose your cup', types)
+    + (t === 'mug' ? field('Lid style', radioGroup('mugLid', ['Crystal lid', 'Classic lid'], DS.mugLid)) : '')
+    + field(`${t === 'kids' ? 'Lid band' : 'Lid finish'} <span class="field__value">${DS.lid}</span>`, radioGroup('lid', LIDS, DS.lid, { swatch: true }))
+    + field(`${t === 'kids' ? 'Straw topper' : '3D topper'}`, radioGroup('topper', TOPPERS, DS.topper))
+    + field(`Topper color <span class="field__value">${DS.topperColor}</span>`, radioGroup('topperColor', COLORS, DS.topperColor, { swatch: true }), DS.topper === 'None' ? 'hidden' : '')
+    + field(`Straw <span class="field__value">${DS.straw}</span>`, radioGroup('straw', STRAWS, DS.straw, { swatch: true })), 'color')
+  + panel('color', field(`Main color <span class="field__value">${DS.color === 'Custom' ? DS.custom.toUpperCase() : DS.color}</span>`, `<div class="swatches">${radioGroup('color', COLORS, DS.color, { swatch: true }).slice(22, -6)}<label class="swatch swatch--picker ${DS.color === 'Custom' ? 'is-selected' : ''}" title="Any color"><input type="color" value="${DS.custom}" data-ds="custom" aria-label="Pick any color"><span class="swatch__dot"></span></label></div>`)
+    + field('Ombré into <span class="field__value">(optional)</span>', `<div class="swatches"><label class="swatch ${!DS.ombre ? 'is-selected' : ''}" title="None"><input type="radio" class="sr-only" name="ds-ombre" value="" data-ds="ombre" ${!DS.ombre ? 'checked' : ''}><span class="swatch__dot" style="background:#fff;color:var(--muted)">${ic.x.replace('width="20" height="20"', 'width="14" height="14"')}</span><span class="sr-only">None</span></label>${radioGroup('ombre', COLORS, DS.ombre, { swatch: true }).slice(22, -6)}</div>`)
+    + field('Glitter', radioGroup('glitter', GLITTER, DS.glitter)), 'name')
+  + panel('name', `<div class="field"><div class="field__top"><label class="field__label" for="dsName">Name or text</label><span class="field__count" id="dsNameC">${DS.name.length}/18</span></div><input id="dsName" class="input input--lg" maxlength="18" placeholder="e.g. Emma" autocomplete="off" data-ds="name" value="${esc(DS.name)}"></div>`
+    + `<div class="field"><div class="field__top"><label class="field__label" for="dsLine2">Second line <span class="field__value">(optional)</span></label><span class="field__count" id="dsLine2C">${DS.line2.length}/24</span></div><input id="dsLine2" class="input" maxlength="24" placeholder="e.g. Bride squad, Est. 2026" autocomplete="off" data-ds="line2" value="${esc(DS.line2)}"></div>`
+    + field('Lettering', radioGroup('font', ['Script', 'Bubble', 'Classic'], DS.font, { font: true }))
+    + field(`Text color <span class="field__value">${DS.textColor}</span>`, radioGroup('textColor', TEXT_COLORS, DS.textColor, { swatch: true }))
+    + (t === 'tumbler' ? field('Direction', radioGroup('orient', ['Vertical', 'Horizontal'], DS.orient)) : '')
+    + `<div class="field"><label class="field__label" for="dsSize">Text size</label><div class="range"><input type="range" id="dsSize" min="60" max="130" step="5" value="${DS.size}" data-ds="size"><output id="dsSizeO">${DS.size}%</output></div></div>`, 'extras')
+  + panel('extras', field('Decorations <span class="field__value">(pick any)</span>', radioGroup('decos', DECOS, DS.decos, { multi: true }))
+    + `<div class="field"><div class="field__top"><label class="field__label" for="dsNotes">Special notes <span class="field__value">(optional)</span></label><span class="field__count" id="dsNotesC">${DS.notes.length}/300</span></div><textarea id="dsNotes" class="input" rows="3" maxlength="300" placeholder="Theme, favorite character, gift occasion, event date…" data-ds="notes">${esc(DS.notes)}</textarea></div>`
+    + `<p class="hint">${ic.image} Have a reference photo? You can send it in the WhatsApp chat.</p>`);
+}
+function bindDesigner() {
+  const panel = $('#dpanel');
+  let activeTab = 'cup';
+  const syncWA = () => { $('#dWa').href = waUrl(singleMsg(dsLine())); };
+  const rerenderPanels = () => { $('#dpanels').innerHTML = designerPanels(activeTab); };
+  const selectTab = (id) => {
+    activeTab = id;
+    $$('.tab', panel).forEach((t) => t.setAttribute('aria-selected', t.dataset.tab === id));
+    $$('.tabpanel', panel).forEach((p) => (p.hidden = p.id !== 'panel-' + id));
+    if (innerWidth < 860) $('.tabs', panel).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  panel.addEventListener('click', (e) => { const t = e.target.closest('[data-tab]'); if (t) selectTab(t.dataset.tab); });
+  panel.addEventListener('input', (e) => {
+    const el = e.target, k = el.dataset.ds; if (!k) return;
+    if (k === 'decos') DS.decos = $$('input[data-ds="decos"]:checked', panel).map((i) => i.value);
+    else if (k === 'custom') { DS.custom = el.value; DS.color = 'Custom'; }
+    else if (k === 'size') { DS.size = +el.value; $('#dsSizeO').textContent = DS.size + '%'; }
+    else DS[k] = el.value;
+    if (k === 'type') { if (DS.type !== 'tumbler') DS.orient = 'Horizontal'; else DS.orient = 'Vertical'; }
+    const structural = ['type', 'topper', 'color', 'custom', 'ombre', 'lid', 'straw', 'textColor', 'topperColor', 'mugLid', 'font', 'glitter', 'orient', 'decos'].includes(k);
+    if (structural && el.type !== 'color') { rerenderPanels(); const f = $(`[data-ds="${k}"][value="${CSS.escape(String(el.value))}"]`, panel); f?.focus({ preventScroll: true }); }
+    if (structural && el.type === 'color') { $$('#panel-color .swatch', panel).forEach((s) => s.classList.toggle('is-selected', s.classList.contains('swatch--picker'))); }
+    ['name', 'line2', 'notes'].forEach((n) => { const c = $(`#ds${n === 'line2' ? 'Line2' : n[0].toUpperCase() + n.slice(1)}C`); if (c && k === n) c.textContent = `${DS[n].length}/${el.maxLength}`; });
+    if (k === 'name' || k === 'line2') Designer.faceFront();
+    Designer.update(); syncWA();
+  });
+  syncWA();
+  Designer.mount($('#stage'));
+}
+
+/* =========================================================================
+   3D ENGINE (Three.js, loaded on demand)
+   ========================================================================= */
+const Designer = {
+  T: null, alive: false, fallback: false,
+  async load() {
+    if (this.T) return this.T;
+    const [THREE, oc, re] = await Promise.all([import('three'), import('three/addons/controls/OrbitControls.js'), import('three/addons/environments/RoomEnvironment.js')]);
+    return (this.T = { THREE, OrbitControls: oc.OrbitControls, RoomEnvironment: re.RoomEnvironment });
+  },
+  async mount(stage) {
+    this.alive = true; this.fallback = false; this.stage = stage;
+    let T;
+    try {
+      [T] = await Promise.all([this.load(), document.fonts?.load ? Promise.all(['Pacifico', 'Fredoka', 'Fraunces', 'DM Sans'].map((f) => document.fonts.load(`600 60px "${f}"`))).catch(() => {}) : null]);
+      if (!this.alive || !stage.isConnected) return;
+      this.init(T);
+    } catch (err) {
+      console.warn('3D designer unavailable, using 2D preview.', err);
+      if (this.alive && stage.isConnected) this.useFallback();
+    }
+  },
+  useFallback() {
+    this.fallback = true;
+    $('#stageLoading')?.remove();
+    const d = document.createElement('div'); d.className = 'stage__svg'; d.id = 'stageSvg'; this.stage.appendChild(d);
+    const p = document.createElement('p'); p.className = 'stage__err'; p.textContent = 'The 3D preview needs an internet connection — here’s a quick preview instead.'; this.stage.appendChild(p);
+    $('#stageHint')?.remove(); this.update();
+  },
+  init(T) {
+    const { THREE } = T, stage = this.stage;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const pm = new THREE.PMREMGenerator(renderer);
+    scene.environment = pm.fromScene(new T.RoomEnvironment(), 0.04).texture;
+    const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const controls = new T.OrbitControls(camera, renderer.domElement);
+    Object.assign(controls, { enableDamping: true, enablePan: false, minDistance: 5.2, maxDistance: 13, minPolarAngle: .35, maxPolarAngle: 1.75, rotateSpeed: .8 });
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xf4cbd7, .7));
+    const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(3, 6, 5); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xff8fb8, 1.4); rim.position.set(-4, 3, -4); scene.add(rim);
+    // soft pink floor shadow
+    const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d');
+    const g = sx.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(196,45,99,.35)'); g.addColorStop(1, 'rgba(196,45,99,0)'); sx.fillStyle = g; sx.fillRect(0, 0, 128, 128);
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 3.4), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = .002; scene.add(shadow);
+    const group = new THREE.Group(); scene.add(group);
+    const cv = document.createElement('canvas'); const tex = new THREE.CanvasTexture(cv);
+    tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    Object.assign(this, { THREE, renderer, scene, camera, controls, group, cv, tex, pm, auto: true, interacting: false, resumeAt: 0, front: 1.6, builtType: null, builtTopper: null });
+    controls.addEventListener('start', () => { this.interacting = true; $('#stageHint')?.classList.add('is-gone'); });
+    controls.addEventListener('end', () => { this.interacting = false; this.resumeAt = performance.now() + 2500; });
+    this.resetView(true);
+    this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(stage); this.resize();
+    group.rotation.y = -2.6;
+    this.update();
+    $('#stageLoading')?.remove();
+    const loop = (t) => {
+      this.raf = requestAnimationFrame(loop);
+      const dt = Math.min(.05, (t - (this.last || t)) / 1000); this.last = t;
+      if (this.front > 0) { this.front -= dt; const k = Math.round(group.rotation.y / (Math.PI * 2)) * Math.PI * 2; group.rotation.y += (k - group.rotation.y) * Math.min(1, dt * 5); }
+      else if (this.auto && !this.interacting && t > this.resumeAt && S.motion === 'on') group.rotation.y += dt * .45;
+      const P = this.parts;
+      if (P.topper) { P.topper.position.y = P.topperY + Math.sin(t / 600) * .035; P.topper.rotation.y = Math.sin(t / 900) * .4; }
+      if (P.sparkMat) P.sparkMat.uniforms.uTime.value = t / 1000;
+      controls.update(); renderer.render(scene, camera);
+    };
+    this.raf = requestAnimationFrame(loop);
+  },
+  resize() {
+    if (!this.renderer) return;
+    const w = this.stage.clientWidth, h = this.stage.clientHeight;
+    this.renderer.setSize(w, h, false); this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+  },
+  resetView(instant) {
+    const c = this.camera; if (!c) return;
+    const dist = this.stage.clientWidth / this.stage.clientHeight < .9 ? 12 : 10.5;
+    c.position.set(0, 3.1, dist); this.controls.target.set(0, 2.25, 0); this.controls.update();
+    if (!instant) this.faceFront();
+  },
+  faceFront() { this.front = 1.2; },
+  setAuto(on) { this.auto = on; },
+  destroy() {
+    this.alive = false;
+    cancelAnimationFrame(this.raf); this.ro?.disconnect();
+    if (this.renderer) { this.controls.dispose(); this.renderer.dispose(); this.renderer.forceContextLoss?.(); this.renderer.domElement.remove(); }
+    this.renderer = null; this.parts = {}; this.builtType = null;
+  },
+  /* ---- materials & geometry ---- */
+  update() {
+    if (this.fallback) { const s = $('#stageSvg'); if (s) s.innerHTML = cupSVG({ type: DS.type, hex: dsHex(), name: DS.name, font: DS.font, deco: DS.glitter === 'None' ? '' : 'Glitter' }); return; }
+    if (!this.renderer) return;
+    if (this.builtType !== DS.type) this.build();
+    this.applyMaterials();
+    if (this.builtTopper !== DS.topper + DS.type) this.buildTopper();
+    this.paint();
+  },
+  build() {
+    const THREE = this.THREE, g = this.group;
+    g.traverse((o) => o.geometry?.dispose()); g.clear();
+    const P = (this.parts = {});
+    P.body = new THREE.MeshPhysicalMaterial({ map: this.tex, roughness: .32, metalness: .05, clearcoat: 1, clearcoatRoughness: .06 });
+    P.base = new THREE.MeshPhysicalMaterial({ roughness: .4, clearcoat: .6 });
+    P.lid = new THREE.MeshPhysicalMaterial({ roughness: .22, metalness: 1 });
+    P.straw = new THREE.MeshPhysicalMaterial({ roughness: .25, clearcoat: 1 });
+    P.glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, roughness: .04, thickness: .12, ior: 1.45, clearcoat: 1, side: THREE.DoubleSide });
+    const add = (geo, mat, pos = [0, 0, 0], rot = [0, 0, 0]) => { const m = new THREE.Mesh(geo, mat); m.position.set(...pos); m.rotation.set(...rot); g.add(m); return m; };
+    let d;
+    if (DS.type === 'tumbler') {
+      d = { rT: .6, rB: .55, h: 3, y0: 0 };
+      add(new THREE.CylinderGeometry(d.rT, d.rB, d.h, 160, 1, true, Math.PI), P.body, [0, d.h / 2, 0]);
+      add(new THREE.CircleGeometry(d.rB, 64), P.base, [0, .001, 0], [Math.PI / 2, 0, 0]);
+      add(new THREE.CylinderGeometry(.63, .63, .3, 96), P.lid, [0, d.h + .15, 0]);
+      add(new THREE.TorusGeometry(.615, .025, 16, 96), P.lid, [0, d.h + .3, 0], [Math.PI / 2, 0, 0]);
+      add(new THREE.CylinderGeometry(.045, .045, 2.1, 24), P.straw, [.22, d.h + .8, 0], [0, 0, -.1]);
+      P.anchor = [-.22, d.h + .55, .12];
+    } else if (DS.type === 'mug') {
+      d = { rT: .8, rB: .8, h: 2.15, y0: .14 };
+      add(new THREE.CylinderGeometry(d.rT, d.rB, d.h, 160, 1, true, Math.PI), P.body, [0, d.y0 + d.h / 2, 0]);
+      add(new THREE.CircleGeometry(d.rB, 64), P.base, [0, d.y0, 0], [-Math.PI / 2, 0, 0]);
+      add(new THREE.CylinderGeometry(.86, .86, 2.35, 128, 1, true), P.glass, [0, 1.2, 0]);
+      add(new THREE.CylinderGeometry(.86, .84, .14, 96), P.glass, [0, .07, 0]);
+      [2.3, 2.4].forEach((y) => add(new THREE.TorusGeometry(.865, .022, 12, 96), P.glass, [0, y, 0], [Math.PI / 2, 0, 0]));
+      add(new THREE.TorusGeometry(.5, .1, 24, 64, Math.PI), P.glass, [.86, 1.2, 0], [0, 0, -Math.PI / 2]);
+      add(new THREE.CylinderGeometry(.9, .9, .22, 96), P.lid, [0, 2.49, 0]);
+      add(new THREE.CylinderGeometry(.04, .04, 1.9, 24), P.straw, [.34, 3.05, 0], [0, 0, -.12]);
+      const cr = new THREE.Group(), r = seeded(5);
+      P.crystal = new THREE.MeshPhysicalMaterial({ roughness: .05, metalness: .1, clearcoat: 1, iridescence: 1, iridescenceIOR: 1.6, transmission: .35, thickness: .3 });
+      for (let i = 0; i < 70; i++) {
+        const a = r() * Math.PI * 2, rad = Math.sqrt(r()) * .78, s = .06 + r() * .07;
+        if (Math.hypot(Math.cos(a) * rad - .34, Math.sin(a) * rad) < .12) continue;
+        const m = new THREE.Mesh(new THREE.IcosahedronGeometry(s, 0), P.crystal);
+        m.position.set(Math.cos(a) * rad, 2.6 + s * .6 + r() * .05, Math.sin(a) * rad); m.rotation.set(r() * 3, r() * 3, r() * 3); cr.add(m);
+      }
+      g.add(cr); P.crystals = cr;
+      P.anchor = [-.12, 2.82, .22];
+    } else {
+      d = { rT: .72, rB: .6, h: 2, y0: 0 };
+      add(new THREE.CylinderGeometry(d.rT, d.rB, d.h, 160, 1, true, Math.PI), P.body, [0, d.h / 2, 0]);
+      add(new THREE.CircleGeometry(d.rB, 64), P.base, [0, .001, 0], [Math.PI / 2, 0, 0]);
+      add(new THREE.CylinderGeometry(.76, .76, .16, 96), P.lid, [0, d.h + .08, 0]);
+      add(new THREE.SphereGeometry(.74, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2), P.glass, [0, d.h + .16, 0]);
+      add(new THREE.CylinderGeometry(.05, .05, 2.2, 24), P.straw, [.14, d.h + .95, 0], [0, 0, -.04]);
+      P.anchor = [.18, d.h + 2.15, 0];
+    }
+    P.dims = d;
+    // canvas sized to the unwrapped side so artwork isn't stretched
+    const circ = Math.PI * (d.rT + d.rB);
+    this.cv.width = 2048; this.cv.height = Math.round(2048 * d.h / circ);
+    this.tex.dispose(); this.tex.image = this.cv; this.tex.needsUpdate = true;
+    // twinkling glitter sparkles on the surface
+    const N = 900, pos = new Float32Array(N * 3), ph = new Float32Array(N), r = seeded(9);
+    for (let i = 0; i < N; i++) {
+      const y = .05 + r() * (d.h - .1), a = r() * Math.PI * 2, rad = d.rB + (d.rT - d.rB) * (y / d.h) + .006;
+      pos.set([Math.sin(a) * rad, d.y0 + y, Math.cos(a) * rad], i * 3); ph[i] = r();
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('phase', new THREE.BufferAttribute(ph, 1));
+    P.sparkMat = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: { uTime: { value: 0 }, uSize: { value: 36 * Math.min(devicePixelRatio, 2) }, uColor: { value: new THREE.Color('#ffffff') } },
+      vertexShader: `attribute float phase; uniform float uTime; uniform float uSize; varying float vA;
+        void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0);
+          vec3 n = normalize(normalMatrix * vec3(position.x,0.0,position.z));
+          float facing = smoothstep(0.0, 0.35, dot(n, normalize(-mv.xyz)));
+          float tw = pow(max(0.0, sin(uTime*2.2 + phase*40.0)), 10.0);
+          vA = tw * facing; gl_PointSize = uSize * tw * (4.0 / -mv.z); gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform vec3 uColor; varying float vA;
+        void main(){ vec2 p = gl_PointCoord - 0.5; float d = length(p);
+          float star = max(0.0, 1.0 - d*2.0) + max(0.0, 1.0 - abs(p.x)*18.0) * max(0.0, 1.0 - abs(p.y)*2.2) + max(0.0, 1.0 - abs(p.y)*18.0) * max(0.0, 1.0 - abs(p.x)*2.2);
+          gl_FragColor = vec4(uColor, star * vA); }`,
+    });
+    P.sparks = new THREE.Points(geo, P.sparkMat); g.add(P.sparks);
+    this.builtType = DS.type; this.builtTopper = null;
+  },
+  applyMaterials() {
+    const P = this.parts, base = dsHex(), lid = LIDS.find((l) => l.v === DS.lid);
+    P.base.color.set(shade(DS.ombre ? colorHex(DS.ombre) : base, -.15));
+    P.lid.color.set(lid.hex); P.lid.metalness = lid.metal ? .45 : .05; P.lid.roughness = lid.metal ? .22 : .35; P.lid.clearcoat = 1;
+    P.straw.color.set(findHex(STRAWS, DS.straw)); P.straw.transmission = DS.straw === 'Clear' ? .9 : 0;
+    if (P.crystals) { P.crystals.visible = DS.mugLid === 'Crystal lid'; P.crystal.color.set(shade(base, .45)); }
+    P.sparks.geometry.setDrawRange(0, { None: 0, Fine: 260, Sparkly: 560, Extra: 900 }[DS.glitter]);
+    P.sparkMat.uniforms.uColor.value.set(lum(base) > .7 ? '#ffd6e6' : '#ffffff');
+    if (P.topperMat) P.topperMat.color.set(colorHex(DS.topperColor));
+  },
+  buildTopper() {
+    const THREE = this.THREE, P = this.parts;
+    if (P.topper) { P.topper.traverse((o) => o.geometry?.dispose()); this.group.remove(P.topper); P.topper = null; }
+    this.builtTopper = DS.topper + DS.type;
+    if (DS.topper === 'None') return;
+    P.topperMat = P.topperMat || new THREE.MeshPhysicalMaterial({ roughness: .3, clearcoat: 1, sheen: .6, sheenColor: new THREE.Color('#ffffff') });
+    P.topperMat.color.set(colorHex(DS.topperColor));
+    const t = new THREE.Group(), mat = P.topperMat;
+    const ext = { depth: .16, bevelEnabled: true, bevelThickness: .07, bevelSize: .06, bevelSegments: 6, curveSegments: 24 };
+    if (DS.topper === 'Heart') {
+      const s = new THREE.Shape(); s.moveTo(0, -.5); s.bezierCurveTo(-.15, -.35, -.6, -.1, -.6, .18); s.bezierCurveTo(-.6, .45, -.35, .6, -.15, .55); s.bezierCurveTo(-.05, .52, 0, .45, 0, .38); s.bezierCurveTo(0, .45, .05, .52, .15, .55); s.bezierCurveTo(.35, .6, .6, .45, .6, .18); s.bezierCurveTo(.6, -.1, .15, -.35, 0, -.5);
+      const geo = new THREE.ExtrudeGeometry(s, ext); geo.center(); t.add(new THREE.Mesh(geo, mat));
+    } else if (DS.topper === 'Star') {
+      const s = new THREE.Shape(); for (let i = 0; i < 10; i++) { const a = Math.PI / 2 + (i * Math.PI) / 5, r = i % 2 ? .25 : .58; i ? s.lineTo(Math.cos(a) * r, Math.sin(a) * r) : s.moveTo(Math.cos(a) * r, Math.sin(a) * r); } s.closePath();
+      const geo = new THREE.ExtrudeGeometry(s, ext); geo.center(); t.add(new THREE.Mesh(geo, mat));
+    } else if (DS.topper === 'Bow') {
+      [-1, 1].forEach((k) => { const m = new THREE.Mesh(new THREE.SphereGeometry(.3, 32, 16), mat); m.scale.set(1.15, .72, .4); m.position.x = k * .33; m.rotation.z = k * .35; t.add(m); const tail = new THREE.Mesh(new THREE.ConeGeometry(.09, .42, 16), mat); tail.position.set(k * .14, -.28, 0); tail.rotation.z = k * -.5 + Math.PI; t.add(tail); });
+      const knot = new THREE.Mesh(new THREE.SphereGeometry(.13, 24, 16), mat); knot.scale.set(1, 1, .7); t.add(knot);
+    } else {
+      for (let i = 0; i < 5; i++) { const a = (i / 5) * Math.PI * 2, m = new THREE.Mesh(new THREE.SphereGeometry(.2, 24, 16), mat); m.scale.set(1, 1.35, .45); m.position.set(Math.cos(a) * .25, Math.sin(a) * .25, 0); m.rotation.z = a - Math.PI / 2; t.add(m); }
+      const c = new THREE.Mesh(new THREE.SphereGeometry(.14, 24, 16), new THREE.MeshPhysicalMaterial({ color: '#f5cb45', roughness: .4, clearcoat: 1 })); c.position.z = .06; t.add(c);
+    }
+    const sc = DS.type === 'kids' ? .38 : .5; t.scale.setScalar(sc);
+    t.position.set(...P.anchor); P.topperY = P.anchor[1];
+    this.group.add(t); P.topper = t;
+  },
+  /* artwork painted on a canvas wrapped around the cup */
+  paint() {
+    const cv = this.cv, c = cv.getContext('2d'), W = cv.width, H = cv.height, base = dsHex(), om = DS.ombre ? colorHex(DS.ombre) : null;
+    const g = c.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, shade(base, .22)); g.addColorStop(om ? .35 : .55, base); g.addColorStop(1, om || shade(base, -.12));
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    const r = seeded(11), n = { None: 0, Fine: 4000, Sparkly: 10000, Extra: 18000 }[DS.glitter];
+    for (let i = 0; i < n; i++) {
+      const x = r() * W, y = r() * H, big = r() < .08, rad = big ? 1.5 + r() * 3 : .5 + r() * 1.6, t = r();
+      c.fillStyle = t < .55 ? `rgba(255,255,255,${.35 + r() * .6})` : t < .8 ? shade(base, -.3) : t < .9 ? 'rgba(255,214,140,.95)' : 'rgba(255,160,205,.95)';
+      c.beginPath(); c.arc(x, y, rad, 0, 7); c.fill();
+    }
+    // decorations around the cup, leaving the front free for the name
+    const decoCol = lum(base) > .65 ? '#e8478b' : '#ffffff', hasText = DS.name.trim() || DS.line2.trim();
+    if (DS.decos.length) {
+      const rr = seeded(23), per = Math.round(26 / DS.decos.length) + 4;
+      DS.decos.forEach((d, di) => {
+        for (let i = 0; i < per; i++) {
+          const x = rr() * W, y = H * .06 + rr() * H * .88, s = H * (.045 + rr() * .05);
+          if (hasText && Math.abs(x - W / 2) < W * .13) continue;
+          c.save(); c.translate(x, y); c.rotate((rr() - .5) * .8); c.globalAlpha = .88;
+          this.drawDeco(c, d, s, di % 2 ? '#ffffff' : decoCol, base); c.restore();
+        }
+      });
+    }
+    // name + second line
+    const name = DS.name.trim() || 'Your Name', fam = { Script: 'Pacifico', Bubble: 'Fredoka', Classic: 'Fraunces' }[DS.font];
+    const style = DS.font === 'Classic' ? 'italic 500' : DS.font === 'Bubble' ? '600' : '400';
+    const vertical = DS.type === 'tumbler' && DS.orient === 'Vertical', tHex = findHex(TEXT_COLORS, DS.textColor);
+    c.save(); c.translate(W / 2, H / 2); if (vertical) c.rotate(-Math.PI / 2);
+    const maxLen = vertical ? H * .8 : W * .27, maxSize = vertical ? W * .14 : H * .3;
+    c.font = `${style} 200px "${fam}"`;
+    let size = Math.min(maxSize, (200 * maxLen) / c.measureText(name).width) * (DS.size / 100);
+    c.font = `${style} ${size}px "${fam}"`; c.textAlign = 'center'; c.textBaseline = 'middle';
+    const y1 = DS.line2.trim() ? -size * .18 : 0;
+    c.globalAlpha = DS.name.trim() ? 1 : .45; c.lineJoin = 'round';
+    c.lineWidth = size * .14; c.strokeStyle = DS.textColor === 'White' ? 'rgba(0,0,0,.22)' : '#ffffff';
+    c.shadowColor = 'rgba(0,0,0,.25)'; c.shadowBlur = size * .08; c.shadowOffsetY = size * .03;
+    c.strokeText(name, 0, y1); c.shadowColor = 'transparent'; c.fillStyle = tHex; c.fillText(name, 0, y1);
+    if (DS.line2.trim()) {
+      const s2 = Math.max(size * .26, 26); c.globalAlpha = 1;
+      c.font = `700 ${s2}px "DM Sans"`; if ('letterSpacing' in c) c.letterSpacing = s2 * .18 + 'px';
+      const t2 = DS.line2.trim().toUpperCase();
+      c.lineWidth = s2 * .22; c.strokeText(t2, 0, y1 + size * .62); c.fillText(t2, 0, y1 + size * .62);
+      if ('letterSpacing' in c) c.letterSpacing = '0px';
+    }
+    c.restore();
+    this.tex.needsUpdate = true;
+  },
+  drawDeco(c, d, s, col, base) {
+    c.fillStyle = col; c.strokeStyle = col;
+    if (d === 'Hearts') { c.beginPath(); c.moveTo(0, s * .35); c.bezierCurveTo(-s * .9, -s * .25, -s * .45, -s * .95, 0, -s * .45); c.bezierCurveTo(s * .45, -s * .95, s * .9, -s * .25, 0, s * .35); c.fill(); }
+    else if (d === 'Stars') { c.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + (i * Math.PI) / 5, r = i % 2 ? s * .22 : s * .55; c.lineTo(Math.cos(a) * r, Math.sin(a) * r); } c.closePath(); c.fill(); }
+    else if (d === 'Flowers') { for (let i = 0; i < 5; i++) { c.save(); c.rotate((i * Math.PI * 2) / 5); c.beginPath(); c.ellipse(0, -s * .32, s * .2, s * .32, 0, 0, 7); c.fill(); c.restore(); } c.fillStyle = '#f5cb45'; c.beginPath(); c.arc(0, 0, s * .16, 0, 7); c.fill(); }
+    else { [[-1, -1], [1, -1]].forEach(([k]) => { c.beginPath(); c.ellipse(k * s * .3, -s * .18, s * .3, s * .22, k * .5, 0, 7); c.fill(); c.beginPath(); c.ellipse(k * s * .22, s * .2, s * .2, s * .15, k * -.4, 0, 7); c.fill(); }); c.fillStyle = shade(base, -.5); c.fillRect(-s * .04, -s * .35, s * .08, s * .7); }
+  },
+  snapshot(w = 900, h = 1125, branded = true) {
+    if (!this.renderer) return null;
+    this.renderer.render(this.scene, this.camera);
+    const src3d = this.renderer.domElement, out = document.createElement('canvas'); out.width = w; out.height = h;
+    const c = out.getContext('2d');
+    if (branded) { const g = c.createRadialGradient(w / 2, h * .4, 0, w / 2, h * .4, h * .75); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#f9d6e3'); c.fillStyle = g; c.fillRect(0, 0, w, h); }
+    else { c.fillStyle = '#fde8ee'; c.fillRect(0, 0, w, h); }
+    const sw = src3d.width, sh = src3d.height, scale = Math.max(w / sw, h / sh) * (branded ? .92 : 1);
+    c.drawImage(src3d, (w - sw * scale) / 2, (h - sh * scale) / 2 - (branded ? h * .03 : 0), sw * scale, sh * scale);
+    if (branded) { c.fillStyle = '#c42d63'; c.font = 'italic 500 44px "Fraunces"'; c.textAlign = 'center'; c.fillText(BRAND.name + ' ♡', w / 2, h - 50); }
+    return out.toDataURL(branded ? 'image/png' : 'image/jpeg', .82);
+  },
+};
+
+/* =========================================================================
+   ROUTER
+   ========================================================================= */
+let cleanups = [], current = null;
+function parse() { const raw = location.hash.slice(1) || '/', [p, q = ''] = raw.split('?'), path = p.startsWith('/') ? p : '/' + p; return { path, seg: path.split('/').filter(Boolean), params: new URLSearchParams(q) }; }
+function render() {
+  const r = parse(), prev = current; current = r;
+  cleanups.forEach((f) => f()); cleanups = [];
+  Designer.destroy();
+  while (overlays.length) closeOverlay();
+  const [page, id] = r.seg, main = $('#main');
+  if (page === 'shop') main.innerHTML = Shop(r);
+  else if (page === 'product') main.innerHTML = ProductPage(id);
+  else if (page === 'custom') main.innerHTML = CustomPage(r);
+  else main.innerHTML = Home();
+  // images fade in when loaded
+  $$('img.img', main).forEach((im) => { if (im.complete && im.naturalWidth) im.classList.add('is-ready'); });
+  if (page === 'shop') bindShop(r);
+  else if (page === 'product' && productById(id)) bindPdp($('[data-pdp]', main), productById(id));
+  else if (page === 'custom') bindDesigner();
+  else if (!page) bindHome();
+  initReveal(main); sizeHearts();
+  $$('#nav a').forEach((a) => a.classList.toggle('is-active', !!a.dataset.match && r.path.startsWith(a.dataset.match)));
+  $('#waFloat').classList.toggle('is-hidden', page === 'product' || page === 'custom');
+  $('#waFloat').tabIndex = page === 'product' || page === 'custom' ? -1 : 0;
+  const p = page === 'product' ? productById(id) : null;
+  document.title = p ? `${p.name} | ${BRAND.name}` : page === 'shop' ? `Shop All | ${BRAND.name}` : page === 'custom' ? `Design Your Cup in 3D | ${BRAND.name}` : `${BRAND.name} — Personalized Tumblers & Custom Cups`;
+  const sec = r.params.get('s');
+  if (sec) requestAnimationFrame(() => document.getElementById(sec)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  else if (!prev || prev.path !== r.path || page === 'shop' || page === 'custom') scrollTo({ top: 0 });
+}
+
+/* =========================================================================
+   GLOBAL EVENTS
+   ========================================================================= */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-action]');
+  const burstEl = e.target.closest('[data-burst]');
+  if (burstEl) { const rr = burstEl.getBoundingClientRect(); burst(rr.left + rr.width / 2, rr.top + rr.height / 2, 14); }
+  if (e.target.classList.contains('overlay')) { closeOverlay(e.target); return; }
+  if (e.target.closest('.overlay a[href^="#"]')) { const o = e.target.closest('.overlay'); if (o && location.hash === e.target.closest('a').getAttribute('href')) closeOverlay(o); }
+  if (!a) return;
+  const act = a.dataset.action, pdp = a.closest('[data-pdp]');
+  switch (act) {
+    case 'skip': $('#main').focus(); break;
+    case 'menu': openOverlay('menuOverlay'); break;
+    case 'search': renderSearch(''); $('#searchInput').value = ''; openOverlay('searchOverlay'); break;
+    case 'cart': renderCart(); $('#toastRegion').innerHTML = ''; openOverlay('cartOverlay'); break;
+    case 'close': closeOverlay(a.closest('.overlay')); break;
+    case 'toast-x': $('#toastRegion').innerHTML = ''; break;
+    case 'fav': toggleFav(a.dataset.fav, a); break;
+    case 'quick': { const p = productById(a.dataset.id); $('#quickPanel').innerHTML = `<button type="button" class="icon-btn modal__close" data-action="close" aria-label="Close">${ic.x}</button>${pdpHTML(p, true)}`; $$('#quickPanel img.img').forEach((im) => im.complete && im.naturalWidth && im.classList.add('is-ready')); bindPdp($('#quickPanel [data-pdp]'), p); $('#quickPanel').setAttribute('aria-label', p.name); openOverlay('quickOverlay'); break; }
+    case 'add': pdp?._add(a); if (a.closest('#quickOverlay')) setTimeout(() => closeOverlay($('#quickOverlay')), 700); break;
+    case 'add-note': { const f = a.nextElementSibling; f.hidden = false; a.remove(); f.querySelector('textarea').focus(); break; }
+    case 'thumb': { const tr = $('[data-track]', pdp); tr.scrollTo({ left: +a.dataset.i * tr.clientWidth, behavior: 'smooth' }); break; }
+    case 'qty-inc': case 'qty-dec': {
+      const d = act === 'qty-inc' ? 1 : -1;
+      if (a.dataset.key !== undefined) { const it = S.cart.find((i) => i.key === a.dataset.key); if (it) { it.qty = Math.max(1, Math.min(99, it.qty + d)); saveCart(); renderCart(); } }
+      else if (a.hasAttribute('data-dq')) { DS.qty = Math.max(1, Math.min(99, DS.qty + d)); a.parentElement.querySelector('output').textContent = DS.qty; a.parentElement.querySelector('[data-action="qty-dec"]').disabled = DS.qty <= 1; $('#dWa').href = waUrl(singleMsg(dsLine())); }
+      else pdp?._qty(d);
+      break;
+    }
+    case 'remove': S.cart = S.cart.filter((i) => i.key !== a.dataset.key); saveCart(); renderCart(); break;
+    case 'motion': S.motion = S.motion === 'on' ? 'off' : 'on'; save('dp-motion', S.motion); document.documentElement.classList.toggle('calm', S.motion === 'off'); a.setAttribute('aria-pressed', S.motion === 'on'); a.querySelector('strong').textContent = S.motion === 'on' ? 'On' : 'Off'; break;
+    case 'd-rotate': { const on = a.getAttribute('aria-pressed') !== 'true'; a.setAttribute('aria-pressed', on); Designer.setAuto(on); break; }
+    case 'd-reset': Designer.resetView(); break;
+    case 'd-download': { const url = Designer.snapshot(); if (!url) break; const l = document.createElement('a'); l.href = url; l.download = `my-${BRAND.name.toLowerCase().replace(/\s+/g, '-')}-cup.png`; l.click(); const rr = a.getBoundingClientRect(); burst(rr.left + 20, rr.top + 20); break; }
+    case 'd-add': { const thumb = Designer.snapshot(168, 210, false) || CUP_TYPES.find((c) => c.v === DS.type).img; addToCart({ productId: 'custom', image: thumb, ...dsLine() }, $('#stage')); a.innerHTML = `${ic.check} Added to your bag`; setTimeout(() => (a.innerHTML = `${ic.bag} Add to bag & keep shopping`), 1800); break; }
+  }
+});
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'searchInput') renderSearch(e.target.value);
+  if (e.target.id === 'orderNotes') { S.notes = e.target.value; $('#cartWa').href = waUrl(orderMsg(S.cart, S.notes)); }
+});
+document.addEventListener('submit', (e) => { if (e.target.id === 'searchForm') { e.preventDefault(); const q = $('#searchInput').value.trim(); closeOverlay(); location.hash = '/shop' + (q ? '?q=' + encodeURIComponent(q) : ''); } });
+document.addEventListener('keydown', (e) => {
+  const o = overlays[overlays.length - 1]; if (!o) return;
+  if (e.key === 'Escape') closeOverlay(o);
+  if (e.key === 'Tab') { const els = focusables(o); if (!els.length) return; const f = els[0], l = els[els.length - 1]; if (e.shiftKey && document.activeElement === f) { e.preventDefault(); l.focus(); } else if (!e.shiftKey && document.activeElement === l) { e.preventDefault(); f.focus(); } }
+});
+document.addEventListener('pointermove', onTilt, { passive: true });
+document.addEventListener('pointerout', offTilt, { passive: true });
+document.addEventListener('load', (e) => { if (e.target.tagName === 'IMG' && e.target.classList.contains('img')) e.target.classList.add('is-ready'); }, true);
+document.addEventListener('error', (e) => { if (e.target.tagName === 'IMG' && e.target.classList.contains('img')) e.target.classList.add('is-error'); }, true);
+addEventListener('scroll', () => $('#header').classList.toggle('is-scrolled', scrollY > 8), { passive: true });
+addEventListener('resize', sizeHearts);
+addEventListener('hashchange', render);
+addEventListener('storage', (e) => { if (e.key === 'dp-cart') { S.cart = load('dp-cart', []); updateBadges(); } });
+
+/* boot */
+document.documentElement.classList.toggle('calm', S.motion === 'off');
+renderChrome();
+render();
+</script>
+</body>
+</html>
